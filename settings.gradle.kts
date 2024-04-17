@@ -1,1 +1,1 @@
-rootProject.name = "kotlin-openapi-bindings"
+rootProject.name = "kotlin-rgxgen"

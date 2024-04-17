@@ -100,14 +100,15 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
             }
         }
-        commonTest {
+        val jvmTest by getting  {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(kotlin("test-junit"))
-                implementation("io.kotest:kotest-framework-engine:5.6.1")
-                implementation("io.kotest:kotest-assertions-core:5.6.1")
-                implementation("io.kotest:kotest-assertions-json:5.6.1")
+                implementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+                implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+                implementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
+                implementation("org.junit.platform:junit-platform-suite:1.10.2")
             }
         }
     }

@@ -13,6 +13,7 @@ import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.ASCII_SYMBOL_RANGE
 import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder
 import community.flock.kotlinx.rgxgen.visitors.helpers.SymbolSetIndexer
+import kotlin.jvm.JvmStatic
 import kotlin.random.Random
 
 /* **************************************************************************
@@ -60,7 +61,7 @@ open class NotMatchingGenerationVisitor(
         val pos = aStringBuilder.length
         val nodes: Array<out Node> = node.nodes
         do {
-            aStringBuilder.delete(pos, Int.MAX_VALUE)
+            aStringBuilder.deleteRange(pos, Int.MAX_VALUE)
             val i = aRandom.nextInt(nodes.size)
             nodes[i].visit(this)
             // To match group values along with generated values - we need to prepend groups values before the generated
@@ -98,7 +99,7 @@ open class NotMatchingGenerationVisitor(
         } else {
             val builder = StringBuilder(nodeValue.length)
             do {
-                builder.delete(0, Int.MAX_VALUE)
+                builder.deleteRange(0, Int.MAX_VALUE)
                 nodeValue.toList()
                     .map { getRandomCharacter(aRandom.nextInt(ALL_SYMBOLS.size())).code }
                     .forEach { c: Int -> builder.append(c.toChar()) }

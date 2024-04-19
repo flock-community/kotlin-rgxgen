@@ -2,6 +2,7 @@ package community.flock.kotlinx.rgxgen.model
 
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider
 import community.flock.kotlinx.rgxgen.util.Util
+import kotlin.jvm.JvmField
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

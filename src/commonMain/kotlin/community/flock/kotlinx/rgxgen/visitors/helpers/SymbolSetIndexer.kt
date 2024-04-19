@@ -24,7 +24,7 @@ import community.flock.kotlinx.rgxgen.util.chars.CharList
 class SymbolSetIndexer(symbolSet: SymbolSet) {
     private val symbols: CharList? = symbolSet.symbols
     private val symbolRanges: List<SymbolRange> = symbolSet.symbolRanges
-    private val rangeOffsets: IntArray
+    private val rangeOffsets: MutableList<Int>
     private val size: Int
 
     init {
@@ -32,7 +32,7 @@ class SymbolSetIndexer(symbolSet: SymbolSet) {
 
         val rangesCount = symbolRanges.size
         if (rangesCount > 0) {
-            rangeOffsets = IntArray(rangesCount)
+            rangeOffsets = mutableListOf(rangesCount)
             var currentOffset = 0
             rangeOffsets[0] = currentOffset
             for (i in 0 until rangesCount - 1) {
@@ -45,7 +45,7 @@ class SymbolSetIndexer(symbolSet: SymbolSet) {
             }
             tmpSize += symbolRanges[rangesCount - 1].size()
         } else {
-            rangeOffsets = IntArray(0)
+            rangeOffsets = mutableListOf(0)
         }
         size = tmpSize
     }

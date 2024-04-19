@@ -55,7 +55,7 @@ class CharArrayList : CharList {
     }
 
     override fun list(): List<Char> {
-        return String(elementData!!, 0, size).toList()
+        return elementData!!.concatToString(0, 0 + size).toList()
     }
 
     override fun addAll(originalSymbols: CharList) {
@@ -70,7 +70,7 @@ class CharArrayList : CharList {
         if (srcLength > elementData!!.size - size) {
             grow(size + srcLength)
         }
-        System.arraycopy(srcArr, 0, elementData, size, srcLength)
+        srcArr?.copyInto(elementData!!, 0,0,size)
         size += srcLength
     }
 

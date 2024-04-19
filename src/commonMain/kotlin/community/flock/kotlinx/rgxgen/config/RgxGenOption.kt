@@ -2,6 +2,7 @@ package community.flock.kotlinx.rgxgen.config
 
 import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition
 import community.flock.kotlinx.rgxgen.model.WhitespaceChar
+import kotlin.jvm.JvmField
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

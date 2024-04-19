@@ -31,7 +31,7 @@ class ReferenceIteratorSupplier(
             referenceIterator.setOther(stringIterator)
         }
 
-        aReferenceIteratorMap.computeIfAbsent(aIndex) { ArrayList() }
+        aReferenceIteratorMap.getOrPut(aIndex) { ArrayList() }
             .add(referenceIterator)
 
         return referenceIterator

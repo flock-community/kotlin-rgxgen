@@ -1,6 +1,7 @@
 package community.flock.kotlinx.rgxgen.util.chars
 
 import community.flock.kotlinx.rgxgen.model.SymbolRange
+import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -98,7 +99,7 @@ abstract class CharList {
         fun charList(symbolRanges: List<SymbolRange>, vararg symbols: Char): CharList {
             val size = symbols.size + symbolRanges.map { obj: SymbolRange -> obj.size() }.sum()
             val arr = CharArray(size)
-            System.arraycopy(symbols, 0, arr, 0, symbols.size)
+            symbols.copyInto(arr, 0, 0, arr.size)
             var index = symbols.size
             for (symbolRange in symbolRanges) {
                 for (i in symbolRange.from..symbolRange.to) {

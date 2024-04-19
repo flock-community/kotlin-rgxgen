@@ -67,7 +67,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
             val finalSymbol = FinalSymbol(sb.toString())
             aNodesStartPos[finalSymbol] = aCharIterator.prevPos() - finalSymbol.value.length
             nodes.add(finalSymbol)
-            sb.delete(0, Int.MAX_VALUE)
+            sb.deleteRange(0, Int.MAX_VALUE)
         }
     }
 
@@ -279,7 +279,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         } else {
             // Repetition for the last character
             val charToRepeat = sb[sb.length - 1]
-            sb.deleteCharAt(sb.length - 1)
+            sb.deleteAt(sb.length - 1)
             sbToFinal(sb, nodes)
             repeatNode = FinalSymbol(charToRepeat.toString())
             aNodesStartPos[repeatNode] = aCharIterator.prevPos() - 1
@@ -330,9 +330,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         if (groupRefAllowed) {
             val startPos = aCharIterator.prevPos() - 1
             val digitsSubstring = aCharIterator.takeWhile { ch: Char? ->
-                Character.isDigit(
-                    ch!!
-                )
+                ch!!.isDigit()
             }
             val groupNumber = firstCharacter.toString() + digitsSubstring
             val groupRef = GroupRef('\\'.toString() + groupNumber, groupNumber.toInt())
@@ -453,7 +451,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
                             ), e
                         )
                     }
-                    sb.delete(0, sb.length)
+                    sb.deleteRange(0, sb.length)
                 }
 
                 '}' -> return if (min == -1) {
@@ -676,7 +674,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
             } else {
                 val lastChar = characters[characters.length - 1]
                 val firstChar = characters[characters.length - 2]
-                characters.delete(characters.length - 2, characters.length)
+                characters.deleteRange(characters.length - 2, characters.length)
                 symbolRanges.add(range(firstChar, lastChar))
             }
         }

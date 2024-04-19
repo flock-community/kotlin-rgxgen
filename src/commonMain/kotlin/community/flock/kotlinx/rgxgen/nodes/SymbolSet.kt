@@ -11,6 +11,8 @@ import community.flock.kotlinx.rgxgen.util.Util
 import community.flock.kotlinx.rgxgen.util.chars.CharList
 import community.flock.kotlinx.rgxgen.visitors.NodeVisitor
 import community.flock.kotlinx.rgxgen.visitors.helpers.SymbolSetIndexer
+import kotlin.jvm.JvmField
+import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -84,7 +86,7 @@ class SymbolSet(
         symbols: CharList?,
         type: MatchType,
         universeCharacters: SymbolRange
-    ) : this(pattern, RgxGenCharsDefinition.of(symbolRanges, symbols!!), null, type, universeCharacters)
+    ) : this(pattern, RgxGenCharsDefinition.of(symbolRanges!!, symbols!!), null, type, universeCharacters)
 
     /**
      * Create SymbolSet from ranges and symbols according to type

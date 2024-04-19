@@ -1,6 +1,7 @@
 package community.flock.kotlinx.rgxgen.parsing.dflt
 
 import community.flock.kotlinx.rgxgen.util.Util.repeatChar
+import kotlin.jvm.JvmOverloads
 import kotlin.math.max
 import kotlin.math.min
 
@@ -73,9 +74,8 @@ class CharIterator(private val aValue: String) {
             val c = aValue[aCurrentIndex]
             aCurrentIndex++
             return c
-        } catch (e: StringIndexOutOfBoundsException) {
+        } catch (e: Exception) {
             val noSuchElementException = NoSuchElementException(e.message)
-            noSuchElementException.initCause(e)
             throw noSuchElementException
         }
     }

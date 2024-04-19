@@ -28,7 +28,7 @@ class GroupIteratorSupplier(
     override fun get(): StringIterator {
         val stringIterator = aIteratorSupplier.get()
         aGroupIteratorsMap[aIndex] = stringIterator
-        val orDefault = aReferenceIteratorMap.getOrDefault(aIndex, emptyList())
+        val orDefault = aReferenceIteratorMap[aIndex] ?: emptyList()
         for (referenceIterator in orDefault) {
             referenceIterator.setOther(stringIterator)
         }

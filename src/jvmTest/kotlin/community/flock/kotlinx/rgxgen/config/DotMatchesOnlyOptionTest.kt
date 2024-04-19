@@ -1,115 +1,114 @@
-package community.flock.kotlinx.rgxgen.config;
+package community.flock.kotlinx.rgxgen.config
+
+import community.flock.kotlinx.rgxgen.RgxGen
+import community.flock.kotlinx.rgxgen.RgxGen.Companion.parse
+import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition.Companion.of
+import community.flock.kotlinx.rgxgen.model.UnicodeCategory
+import community.flock.kotlinx.rgxgen.util.Util.newRandom
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import java.util.regex.Pattern
+import kotlin.test.assertEquals
 
 /* **************************************************************************
-   Copyright 2019 Vladislavs Varslavans
+  Copyright 2019 Vladislavs Varslavans
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+      http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-/* **************************************************************************/
-
-
-import community.flock.kotlinx.rgxgen.RgxGen;
-import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition;
-import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
-import community.flock.kotlinx.rgxgen.util.Util;
-import kotlin.random.Random;
-import org.junit.jupiter.api.Test;
-
-import java.util.regex.Pattern;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-class DotMatchesOnlyOptionTest {
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+/ * **************************************************************************/
 
 
-    public static final int COUNT_OF_ITERATIONS = 1000;
-
+internal class DotMatchesOnlyOptionTest {
     @Test
-    void doesNotFailWithoutPropertySet() {
-        RgxGen rgxGen = assertDoesNotThrow(() -> RgxGen.parse("."));
-        assertDoesNotThrow(() -> rgxGen.generate());
-        assertDoesNotThrow(() -> rgxGen.generateNotMatching());
-        assertDoesNotThrow(rgxGen::getUniqueEstimation);
+    fun doesNotFailWithoutPropertySet() {
+        val rgxGen = Assertions.assertDoesNotThrow<RgxGen> { parse(".") }
+        Assertions.assertDoesNotThrow<String> { rgxGen.generate() }
+        Assertions.assertDoesNotThrow<String> { rgxGen.generateNotMatching() }
+        Assertions.assertDoesNotThrow(rgxGen::uniqueEstimation)
     }
 
     @Test
-    void verifyGenerationTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        String permittedCharacters = "abc";
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
-        Random random = Util.newRandom(100500);
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
-            String generatedValue = rgxGen.generate(random);
-            assertTrue(permittedCharacters.contains(generatedValue));
+    fun verifyGenerationTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val permittedCharacters = "abc"
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of(permittedCharacters))
+        val random = newRandom(100500)
+        val rgxGen = parse(properties, ".")
+        for (i in 0 until COUNT_OF_ITERATIONS) {
+            val generatedValue = rgxGen.generate(random)
+            Assertions.assertTrue(permittedCharacters.contains(generatedValue))
         }
     }
 
     @Test
-    void verifyUnicodeGenerationTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        Pattern pattern = Pattern.compile("\\p{InCyrillic}");
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(UnicodeCategory.IN_CYRILLIC));
-        Random random = Util.newRandom(100500);
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
-            String generatedValue = rgxGen.generate(random);
-            assertTrue(pattern.matcher(generatedValue).matches());
+    fun verifyUnicodeGenerationTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val pattern = Pattern.compile("\\p{InCyrillic}")
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of(UnicodeCategory.IN_CYRILLIC))
+        val random = newRandom(100500)
+        val rgxGen = parse(properties, ".")
+        for (i in 0 until COUNT_OF_ITERATIONS) {
+            val generatedValue = rgxGen.generate(random)
+            Assertions.assertTrue(pattern.matcher(generatedValue).matches())
         }
     }
 
     @Test
-    void verifyUnicodeGenerationNotMatchingTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        Pattern pattern = Pattern.compile("\\p{InCyrillic}");
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(UnicodeCategory.IN_CYRILLIC));
-        Random random = Util.newRandom(100500);
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
-            String generatedValue = rgxGen.generateNotMatching(random);
-            assertFalse(pattern.matcher(generatedValue).matches());
+    fun verifyUnicodeGenerationNotMatchingTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val pattern = Pattern.compile("\\p{InCyrillic}")
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of(UnicodeCategory.IN_CYRILLIC))
+        val random = newRandom(100500)
+        val rgxGen = parse(properties, ".")
+        for (i in 0 until COUNT_OF_ITERATIONS) {
+            val generatedValue = rgxGen.generateNotMatching(random)
+            Assertions.assertFalse(pattern.matcher(generatedValue).matches())
         }
     }
 
     @Test
-    void verifyCaseInsensitiveGenerationOptionMattersTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        String permittedCharacters = "abcABC";
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of("abc"));
-        RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
-        Random random = Util.newRandom(100500);
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
-            String generatedValue = rgxGen.generate(random);
-            assertTrue(permittedCharacters.contains(generatedValue));
+    fun verifyCaseInsensitiveGenerationOptionMattersTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val permittedCharacters = "abcABC"
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of("abc"))
+        RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true)
+        val random = newRandom(100500)
+        val rgxGen = parse(properties, ".")
+        for (i in 0 until COUNT_OF_ITERATIONS) {
+            val generatedValue = rgxGen.generate(random)
+            Assertions.assertTrue(permittedCharacters.contains(generatedValue))
         }
     }
 
     @Test
-    void verifyCorrectlyEstimatesCountTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        String permittedCharacters = "abc";
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        assertEquals(Long.valueOf(3), rgxGen.getUniqueEstimation());
+    fun verifyCorrectlyEstimatesCountTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val permittedCharacters = "abc"
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of(permittedCharacters))
+        val rgxGen = parse(properties, ".")
+        Assertions.assertEquals(3, rgxGen.uniqueEstimation)
     }
 
     @Test
-    void verifyCorrectlyEstimatesCaseInsensitiveCountTest() {
-        RgxGenProperties properties = new RgxGenProperties();
-        String permittedCharacters = "abc";
-        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
-        RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
-        RgxGen rgxGen = RgxGen.parse(properties, ".");
-        assertEquals(Long.valueOf(6), rgxGen.getUniqueEstimation());
+    fun verifyCorrectlyEstimatesCaseInsensitiveCountTest() {
+        val properties: RgxGenProperties<Any> = RgxGenProperties()
+        val permittedCharacters = "abc"
+        RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, of(permittedCharacters))
+        RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true)
+        val rgxGen = parse(properties, ".")
+        Assertions.assertEquals(6, rgxGen.uniqueEstimation)
+    }
+
+    companion object {
+        const val COUNT_OF_ITERATIONS: Int = 1000
     }
 }

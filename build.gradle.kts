@@ -88,30 +88,51 @@ kotlin {
     macosArm64()
     linuxX64()
     mingwX64()
-    js(IR) {
-        nodejs()
-    }
     jvm {
-        withJava()
-    }
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+        compilations.all {
+            kotlinOptions{
+                jvmTarget = "17"
             }
         }
-        val jvmTest by getting  {
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
+    js(IR) {
+        nodejs {
+            testTask {
+                useMocha()
+            }
+        }
+        binaries.executable()
+    }
+    sourceSets {
+        commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(kotlin("test-junit"))
-                implementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
-                implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+            }
+        }
+        val jsMain by getting {
+        }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+        val jvmMain by getting {
+        }
+        val jvmTest by getting  {
+            dependencies {
+                implementation(kotlin("test-junit5"))
+                implementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
                 implementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
                 implementation("org.junit.platform:junit-platform-suite:1.10.2")
                 implementation("org.openjdk.jmh:jmh-core:1.37")
-                implementation("org.openjdk.jmh-generator-annprocess:1.37")
+                implementation("org.openjdk.jmh:jmh-generator-annprocess:1.37")
             }
         }
     }
 }
+

@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen.util.chars;
 
 import community.flock.kotlinx.rgxgen.model.SymbolRange;
-import community.flock.kotlinx.rgxgen.util.chars.CharList;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

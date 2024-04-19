@@ -3,8 +3,8 @@ package community.flock.kotlinx.rgxgen.parsing.dflt
 import community.flock.kotlinx.rgxgen.model.SymbolRange
 import community.flock.kotlinx.rgxgen.model.SymbolRange.Companion.range
 import community.flock.kotlinx.rgxgen.nodes.Node
-import java.math.BigInteger
-import java.util.*
+import kotlin.jvm.JvmField
+import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -36,8 +36,9 @@ object ConstantsProvider {
     val DIGITS: SymbolRange = range('0', '9')
     @JvmField
     val ZERO_LENGTH_CHARACTER_ARRAY: CharArray = CharArray(0)
-    @JvmField
-    val BIG_INTEGER_TWO: BigInteger = BigInteger.valueOf(2)
+    const val LONG_ZERO: Long = 0L
+    const val LONG_ONE: Long = 1L
+    const val LONG_TWO: Long = 2L
     const val SPACE_ASCII_CODE: Int = 32 // First printable character in ASCII table
     const val DEL_ASCII_CODE: Int = 127 // Bound for printable characters in ASCII table
     const val MAX_UNICODE_CHARACTER: Int =
@@ -56,7 +57,7 @@ object ConstantsProvider {
         get() = charArrayOf('\t', '\n', '\u000B', '\u000C', '\r', ' ')
 
     val asciiWordCharRanges: List<SymbolRange>
-        get() = Collections.unmodifiableList(Arrays.asList(SMALL_LATIN_LETTERS, CAPITAL_LATIN_LETTERS, DIGITS))
+        get() = listOf(SMALL_LATIN_LETTERS, CAPITAL_LATIN_LETTERS, DIGITS)
 
     @JvmStatic
     fun makeAsciiCharacterArray(): CharArray {

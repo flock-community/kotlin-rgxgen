@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.ArrayIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

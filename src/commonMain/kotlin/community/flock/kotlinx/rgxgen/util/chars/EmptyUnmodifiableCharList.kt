@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen.util.chars
 
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.ZERO_LENGTH_CHARACTER_ARRAY
-import java.util.stream.Stream
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -28,8 +27,8 @@ class EmptyUnmodifiableCharList : CharList() {
         throw UnsupportedOperationException("Unmodifiable CharList!")
     }
 
-    override fun stream(): Stream<Char> {
-        return Stream.empty()
+    override fun list(): List<Char> {
+        return emptyList()
     }
 
     override fun addAll(originalSymbols: CharList) {

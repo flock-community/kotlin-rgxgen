@@ -24,9 +24,9 @@ import community.flock.kotlinx.rgxgen.nodes.SymbolSet.Companion.ofDotPattern
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet.Companion.ofUnicode
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet.Companion.ofUnicodeCharacterClass
 import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder
+import community.flock.kotlinx.rgxgen.util.chars.CharArrayList
 import community.flock.kotlinx.rgxgen.util.chars.CharList
-import community.flock.kotlinx.rgxgen.util.chars.CharListCollector
-import java.util.*
+import kotlin.collections.ArrayList
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -50,7 +50,7 @@ import java.util.*
  */
 class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<*>?) : NodeTreeBuilder {
     private val aCharIterator = CharIterator(expr)
-    private val aNodesStartPos: MutableMap<Node, Int> = IdentityHashMap()
+    private val aNodesStartPos: MutableMap<Node, Int> = mutableMapOf()
 
     private var aNode: Node? = null
     private var aNextGroupIndex = 1
@@ -67,7 +67,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
             val finalSymbol = FinalSymbol(sb.toString())
             aNodesStartPos[finalSymbol] = aCharIterator.prevPos() - finalSymbol.value.length
             nodes.add(finalSymbol)
-            sb.delete(0, Int.MAX_VALUE)
+            sb.deleteRange(0, Int.MAX_VALUE)
         }
     }
 
@@ -279,7 +279,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         } else {
             // Repetition for the last character
             val charToRepeat = sb[sb.length - 1]
-            sb.deleteCharAt(sb.length - 1)
+            sb.deleteAt(sb.length - 1)
             sbToFinal(sb, nodes)
             repeatNode = FinalSymbol(charToRepeat.toString())
             aNodesStartPos[repeatNode] = aCharIterator.prevPos() - 1
@@ -330,9 +330,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         if (groupRefAllowed) {
             val startPos = aCharIterator.prevPos() - 1
             val digitsSubstring = aCharIterator.takeWhile { ch: Char? ->
-                Character.isDigit(
-                    ch!!
-                )
+                ch!!.isDigit()
             }
             val groupNumber = firstCharacter.toString() + digitsSubstring
             val groupRef = GroupRef('\\'.toString() + groupNumber, groupNumber.toInt())
@@ -367,8 +365,10 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
                 val whitespaceChars = RgxGenOption.WHITESPACE_DEFINITION.getFromProperties(
                     properties
                 )!!
-                val whitespaceCharsList = whitespaceChars.stream().map { obj: WhitespaceChar -> obj.get() }
-                    .collect(CharListCollector())
+                val whitespaceCharsList = whitespaceChars.map { obj: WhitespaceChar -> obj.get() }
+                    .toList()
+                    .let { CharArrayList(it.toCharArray()) }
+
                 createdNode = ofAscii(
                     "\\" + c,
                     RgxGenCharsDefinition.of(whitespaceCharsList),
@@ -451,7 +451,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
                             ), e
                         )
                     }
-                    sb.delete(0, sb.length)
+                    sb.deleteRange(0, sb.length)
                 }
 
                 '}' -> return if (min == -1) {
@@ -586,12 +586,12 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
                     val symbolSet = handleBackslashInsideSquareBrackets(characters)
 
                     if (rangeStarted) {
-                        if (symbolSet.isPresent) {
+                        if (symbolSet != null) {
                             throw RgxGenParseException("Cannot make range with a shorthand escape sequences before '" + aCharIterator.context() + '\'')
                         }
                         handleSymbolRange(characters, symbolRanges)
                     } else {
-                        symbolSet.ifPresent { e: SymbolSet -> symbolSets.add(e) }
+                        symbolSet?.let { e -> symbolSets.add(e) }
                     }
                     rangeStarted = false
                 }
@@ -613,7 +613,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         )
     }
 
-    private fun handleBackslashInsideSquareBrackets(characters: StringBuilder): Optional<SymbolSet> {
+    private fun handleBackslashInsideSquareBrackets(characters: StringBuilder): SymbolSet? {
         // Skip backslash and add next symbol to characters
         val nodes: MutableList<Node> = ArrayList()
 
@@ -622,13 +622,13 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
         characters.append(sb)
 
         if (nodes.isEmpty()) {
-            return Optional.empty()
+            return null
         }
 
         if (nodes.size > 1) {
             throw RgxGenParseException("Multiple nodes found inside square brackets escape sequence before '" + aCharIterator.context() + '\'')
         } else {
-            return Optional.of(nodes[0] as SymbolSet)
+            return nodes[0] as SymbolSet
         }
     }
 
@@ -674,7 +674,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
             } else {
                 val lastChar = characters[characters.length - 1]
                 val firstChar = characters[characters.length - 2]
-                characters.delete(characters.length - 2, characters.length)
+                characters.deleteRange(characters.length - 2, characters.length)
                 symbolRanges.add(range(firstChar, lastChar))
             }
         }
@@ -693,7 +693,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
 
             var isAscii = true
             val hasModifiedExclusionChars =
-                externalSets.stream().anyMatch { obj: SymbolSet -> obj.hasModifiedExclusionChars() }
+                externalSets.any { obj: SymbolSet -> obj.hasModifiedExclusionChars() }
             val negativeMatchDefinitions =
                 if (hasModifiedExclusionChars) RgxGenCharsDefinition.of(positiveMatchDefinitions) else null
 
@@ -704,7 +704,7 @@ class DefaultTreeBuilder(expr: String, private val properties: RgxGenProperties<
                     .withRanges(symbolSet.symbolRanges)
                 if (hasModifiedExclusionChars) {
                     if (symbolSet.hasModifiedExclusionChars()) {
-                        negativeMatchDefinitions!!.addAll(symbolSet.negativeMatchExclusionChars)
+                        negativeMatchDefinitions!!.addAll(symbolSet.negativeMatchExclusionChars!!)
                     } else {
                         negativeMatchDefinitions
                             ?.withCharacters(symbolSet.symbols)

@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.ChoiceIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -20,8 +19,7 @@ import java.util.function.Supplier
   limitations under the License.
 / * **************************************************************************/
 
-class ChoiceIteratorSupplier(private val aStringIteratorsSuppliers: List<List<Supplier<StringIterator>>>) :
-    Supplier<StringIterator> {
+class ChoiceIteratorSupplier(private val aStringIteratorsSuppliers: List<List<Supplier<StringIterator>>>) : Supplier<StringIterator> {
     override fun get(): StringIterator {
         val stringIterators: Array<StringIterator> = aStringIteratorsSuppliers
             .flatMap { it.map { it.get() } }

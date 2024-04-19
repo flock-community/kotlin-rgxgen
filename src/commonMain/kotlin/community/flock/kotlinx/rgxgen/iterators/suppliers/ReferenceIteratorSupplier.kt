@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.ReferenceIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -32,7 +31,7 @@ class ReferenceIteratorSupplier(
             referenceIterator.setOther(stringIterator)
         }
 
-        aReferenceIteratorMap.computeIfAbsent(aIndex) { ArrayList() }
+        aReferenceIteratorMap.getOrPut(aIndex) { mutableListOf() }
             .add(referenceIterator)
 
         return referenceIterator

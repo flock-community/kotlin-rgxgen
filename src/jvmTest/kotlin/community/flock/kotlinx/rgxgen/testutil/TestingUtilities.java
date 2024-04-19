@@ -1,18 +1,15 @@
 package community.flock.kotlinx.rgxgen.testutil;
 
-
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.MAX_UNICODE_CHARACTER;
 import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.SPACE_ASCII_CODE;
 
 public final class TestingUtilities {
-    public static final BigInteger BIG_INTEGER_MINUS_ONE = BigInteger.valueOf(-1);
+    public static final Long BIG_INTEGER_MINUS_ONE = Long.valueOf(-1);
 
     public static <T> List<T> iteratorToList(Iterator<T> it) {
         List<T> lst = new ArrayList<>(100);
@@ -29,18 +26,6 @@ public final class TestingUtilities {
         return IntStream.rangeClosed('0', '9')
                         .mapToObj(i -> (char) i)
                         .toArray(Character[]::new);
-    }
-
-    /**
-     * This method helps to overcome the issue that is described here: StrangeBehaviourTests::randomIsNotSoRandomTest
-     *
-     * @param seed seed value
-     * @return new Random()
-     */
-    public static Random newRandom(int seed) {
-        Random random = new Random(seed);
-        random.nextInt();
-        return random;
     }
 
     public static Character[] makeUnicodeCharacterArray() {

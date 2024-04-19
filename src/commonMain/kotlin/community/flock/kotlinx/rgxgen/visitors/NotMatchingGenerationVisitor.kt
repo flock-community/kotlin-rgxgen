@@ -13,9 +13,8 @@ import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.ASCII_SYMBOL_RANGE
 import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder
 import community.flock.kotlinx.rgxgen.visitors.helpers.SymbolSetIndexer
-import java.util.*
-import java.util.function.Function
-import java.util.regex.Pattern
+import kotlin.jvm.JvmStatic
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -42,9 +41,9 @@ open class NotMatchingGenerationVisitor(
         visitSymbolSet(node, SymbolSet::symbolSetIndexer)
     }
 
-    protected fun visitSymbolSet(node: SymbolSet, indexerFunction: Function<SymbolSet, SymbolSetIndexer?>) {
+    protected fun visitSymbolSet(node: SymbolSet, indexerFunction: (SymbolSet) -> SymbolSetIndexer?) {
         val invertedNode = node.invertedNode
-        val indexer = indexerFunction.apply(invertedNode)
+        val indexer = indexerFunction(invertedNode)
         // There is only one way to generate not matching for any character - is to not generate anything
         if (indexer != null && indexer.size() != 0) {
             val idx = aRandom.nextInt(indexer.size())
@@ -58,15 +57,15 @@ open class NotMatchingGenerationVisitor(
         buildGroupsStringAndValuePrefix(groupsBuilder, valuePrefixBuilder)
 
         // Add groups values to pattern - in case there are group refs used inside the node.getPattern()
-        val pattern = Pattern.compile(groupsBuilder.toString() + node.pattern)
+        val pattern = (groupsBuilder.toString() + node.pattern).toRegex()
         val pos = aStringBuilder.length
         val nodes: Array<out Node> = node.nodes
         do {
-            aStringBuilder.delete(pos, Int.MAX_VALUE)
+            aStringBuilder.deleteRange(pos, Int.MAX_VALUE)
             val i = aRandom.nextInt(nodes.size)
             nodes[i].visit(this)
             // To match group values along with generated values - we need to prepend groups values before the generated
-        } while (pattern.matcher(valuePrefixBuilder.toString() + aStringBuilder.substring(pos)).matches())
+        } while (pattern.matches(valuePrefixBuilder.toString() + aStringBuilder.substring(pos)))
     }
 
     /**
@@ -84,7 +83,7 @@ open class NotMatchingGenerationVisitor(
             // In complex expressions we might skip some groups (due to inlined choices/groups/whatever).
             // But still we should properly generate this test
             if (s != null) {
-                groupsBuilder.append(Pattern.quote(s))
+                groupsBuilder.append(Regex.escape(s))
                 ++groupValuesUsed
                 valuePrefixBuilder.append(s)
             }
@@ -100,10 +99,10 @@ open class NotMatchingGenerationVisitor(
         } else {
             val builder = StringBuilder(nodeValue.length)
             do {
-                builder.delete(0, Int.MAX_VALUE)
-                nodeValue.chars()
+                builder.deleteRange(0, Int.MAX_VALUE)
+                nodeValue.toCharArray()
                     .map { getRandomCharacter(aRandom.nextInt(ALL_SYMBOLS.size())).code }
-                    .forEachOrdered { c: Int -> builder.append(c.toChar()) }
+                    .onEach { c: Int -> builder.append(c.toChar()) }
             } while (equalsFinalSymbolRandomString(nodeValue, builder.toString()))
             aStringBuilder.append(builder)
         }

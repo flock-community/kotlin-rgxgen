@@ -1,6 +1,5 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.config.RgxGenOption;
 import community.flock.kotlinx.rgxgen.config.RgxGenProperties;
 import community.flock.kotlinx.rgxgen.data.DataInterface;
@@ -10,13 +9,15 @@ import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder;
 import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder;
 import community.flock.kotlinx.rgxgen.testutil.NodePatternVerifyingVisitor;
 import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
+import community.flock.kotlinx.rgxgen.util.Util;
 import community.flock.kotlinx.rgxgen.visitors.UniqueGenerationVisitor;
 import community.flock.kotlinx.rgxgen.visitors.UniqueValuesCountingVisitor;
+import kotlin.random.Random;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -35,7 +36,7 @@ public class CombinedTests extends CombinedTestTemplate<TestPattern> {
     public void parseTest(TestPattern testPattern) {
         NodeTreeBuilder defaultTreeBuilder = new DefaultTreeBuilder(testPattern.getPattern(), null);
         Node node = defaultTreeBuilder.get();
-        assertEquals(testPattern.getResultNode().toString(), node.toString());
+        Assertions.assertEquals(testPattern.getResultNode().toString(), node.toString());
         NodePatternVerifyingVisitor visitor = new NodePatternVerifyingVisitor(testPattern.getResultNode());
         node.visit(visitor);
         assertTrue(visitor.getErrors().isEmpty(), visitor.getErrors().toString());
@@ -47,7 +48,7 @@ public class CombinedTests extends CombinedTestTemplate<TestPattern> {
         assumeTrue(testPattern.hasEstimatedCount());
         UniqueValuesCountingVisitor v = new UniqueValuesCountingVisitor(new RgxGenProperties());
         testPattern.getResultNode().visit(v);
-        assertEquals(testPattern.getEstimatedCount(), v.getEstimation().orElse(null));
+        assertEquals(testPattern.getEstimatedCount(), v.getEstimation());
     }
 
     @ParameterizedTest
@@ -55,7 +56,7 @@ public class CombinedTests extends CombinedTestTemplate<TestPattern> {
     public void countUniqueTest(TestPattern testPattern) {
         assumeTrue(testPattern.hasEstimatedCount());
         RgxGen rgxGen = RgxGen.parse(testPattern.getPattern());
-        assertEquals(testPattern.getEstimatedCount(), rgxGen.getUniqueEstimation().orElse(null));
+        assertEquals(testPattern.getEstimatedCount(), rgxGen.getUniqueEstimation());
     }
 
     @ParameterizedTest
@@ -73,10 +74,10 @@ public class CombinedTests extends CombinedTestTemplate<TestPattern> {
     public void classRgxGenTest(TestPattern testPattern) {
         RgxGen rgxGen = RgxGen.parse(testPattern.getPattern());
         if (testPattern.hasEstimatedCount()) {
-            assertEquals(testPattern.getEstimatedCount(), rgxGen.getUniqueEstimation().orElse(null));
+            assertEquals(testPattern.getEstimatedCount(), rgxGen.getUniqueEstimation());
         }
         for (int i = 0; i < 100; i++) {
-            Random rand = TestingUtilities.newRandom(i);
+            Random rand = Util.newRandom(i);
             for (int j = 0; j < 10; j++) {
                 String generated = rgxGen.generate(rand);
                 boolean result = isValidGenerated(testPattern, generated, 0);
@@ -93,7 +94,7 @@ public class CombinedTests extends CombinedTestTemplate<TestPattern> {
         RgxGen rgxGen = RgxGen.parse(properties, testPattern.getPattern());
 
         for (int i = 0; i < 100; i++) {
-            Random random = TestingUtilities.newRandom(i);
+            Random random = Util.newRandom(i);
             for (int j = 0; j < 10; j++) {
                 String generated = rgxGen.generate(random);
                 boolean result = isValidGenerated(testPattern, generated, Pattern.CASE_INSENSITIVE);

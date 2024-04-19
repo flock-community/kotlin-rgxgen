@@ -1,7 +1,5 @@
 package community.flock.kotlinx.rgxgen.iterators
 
-import java.util.regex.Pattern
-
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
 
@@ -18,13 +16,15 @@ import java.util.regex.Pattern
   limitations under the License.
 / * **************************************************************************/
 
-class NegativeStringIterator(private val aIterator: StringIterator, private val aPattern: Pattern) : StringIterator {
+class NegativeStringIterator(private val aIterator: StringIterator, private val aPattern: String) : StringIterator {
+
     private var aValue: String? = null
 
+    val regex = aPattern.toRegex()
     override fun next(): String? {
-        do {
-            aValue = aIterator.next()
-        } while (aPattern.matcher(aValue).find())
+        aValue = aIterator.asSequence().find {
+            it?.let { !regex.matches(it) } ?: false
+        }
         return aValue
     }
 

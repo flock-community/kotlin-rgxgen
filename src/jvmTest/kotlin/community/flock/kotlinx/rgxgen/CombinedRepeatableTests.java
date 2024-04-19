@@ -1,17 +1,16 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.data.TestPattern;
-import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
+import community.flock.kotlinx.rgxgen.util.Util;
 import community.flock.kotlinx.rgxgen.visitors.GenerationVisitor;
 import community.flock.kotlinx.rgxgen.visitors.NotMatchingGenerationVisitor;
+import kotlin.random.Random;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -28,7 +27,7 @@ public class CombinedRepeatableTests extends CombinedTestTemplate<TestPattern> {
     @MethodSource("getPatterns")
     public void generateTest(int aSeed, TestPattern testPattern) {
         GenerationVisitor generationVisitor = GenerationVisitor.builder()
-                                                               .withRandom(TestingUtilities.newRandom(aSeed))
+                                                               .withRandom(Util.newRandom(aSeed))
                                                                .get();
         testPattern.getResultNode().visit(generationVisitor);
         boolean result = isValidGenerated(testPattern, generationVisitor.getString(), 0);
@@ -38,8 +37,8 @@ public class CombinedRepeatableTests extends CombinedTestTemplate<TestPattern> {
     @ParameterizedTest(name = "{1}: {0}")
     @MethodSource("getPatterns")
     public void repeatableGenerationTest(int aSeed, TestPattern testPattern) {
-        Random rnd1 = TestingUtilities.newRandom(aSeed);
-        Random rnd2 = TestingUtilities.newRandom(aSeed);
+        Random rnd1 = Util.newRandom(aSeed);
+        Random rnd2 = Util.newRandom(aSeed);
 
         RgxGen rgxGen_1 = RgxGen.parse(testPattern.getPattern());
         RgxGen rgxGen_2 = RgxGen.parse(testPattern.getPattern());
@@ -51,7 +50,7 @@ public class CombinedRepeatableTests extends CombinedTestTemplate<TestPattern> {
     @Timeout(5000)
     public void generateNotMatchingTest(int aSeed, TestPattern testPattern) {
         GenerationVisitor generationVisitor = NotMatchingGenerationVisitor.builder()
-                                                                          .withRandom(TestingUtilities.newRandom(aSeed))
+                                                                          .withRandom(Util.newRandom(aSeed))
                                                                           .get();
         testPattern.getResultNode().visit(generationVisitor);
         boolean result = isValidGenerated(testPattern, generationVisitor.getString(), 0);
@@ -62,8 +61,8 @@ public class CombinedRepeatableTests extends CombinedTestTemplate<TestPattern> {
     @MethodSource("getPatterns")
     @Timeout(5000)
     public void repeatableNotMatchingGenerationTest(int aSeed, TestPattern testPattern) {
-        Random rnd1 = TestingUtilities.newRandom(aSeed);
-        Random rnd2 = TestingUtilities.newRandom(aSeed);
+        Random rnd1 = Util.newRandom(aSeed);
+        Random rnd2 = Util.newRandom(aSeed);
 
         RgxGen rgxGen_1 = RgxGen.parse(testPattern.getPattern());
         RgxGen rgxGen_2 = RgxGen.parse(testPattern.getPattern());

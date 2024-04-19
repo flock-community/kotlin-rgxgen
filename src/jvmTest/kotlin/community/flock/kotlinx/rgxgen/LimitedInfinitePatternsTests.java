@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 
 import static community.flock.kotlinx.rgxgen.data.TestPattern.stream;
 import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.makeAsciiCharacterArray;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 

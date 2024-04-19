@@ -2,7 +2,7 @@ package community.flock.kotlinx.rgxgen.config
 
 import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition
 import community.flock.kotlinx.rgxgen.model.WhitespaceChar
-import java.util.*
+import kotlin.jvm.JvmField
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -62,7 +62,6 @@ class RgxGenOption<T>
      * @param value      a value
      */
     fun setInProperties(properties: RgxGenProperties<Any>, value: Any) {
-        Objects.requireNonNull(value)
         properties.put(key, value)
     }
 
@@ -102,6 +101,6 @@ class RgxGenOption<T>
          */
         @JvmField
         val WHITESPACE_DEFINITION: RgxGenOption<List<WhitespaceChar>> =
-            RgxGenOption("whitespace.matches", Arrays.asList(WhitespaceChar.SPACE, WhitespaceChar.TAB))
+            RgxGenOption("whitespace.matches", listOf(WhitespaceChar.SPACE, WhitespaceChar.TAB))
     }
 }

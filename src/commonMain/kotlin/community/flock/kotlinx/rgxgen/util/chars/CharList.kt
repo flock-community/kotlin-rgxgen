@@ -1,7 +1,7 @@
 package community.flock.kotlinx.rgxgen.util.chars
 
 import community.flock.kotlinx.rgxgen.model.SymbolRange
-import java.util.stream.Stream
+import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -25,7 +25,7 @@ abstract class CharList {
 
     abstract fun add(c: Int)
 
-    abstract fun stream(): Stream<Char>
+    abstract fun list(): List<Char>
 
     abstract fun addAll(originalSymbols: CharList)
 
@@ -97,9 +97,9 @@ abstract class CharList {
 
         @JvmStatic
         fun charList(symbolRanges: List<SymbolRange>, vararg symbols: Char): CharList {
-            val size = symbols.size + symbolRanges.stream().mapToInt { obj: SymbolRange -> obj.size() }.sum()
+            val size = symbols.size + symbolRanges.map { obj: SymbolRange -> obj.size() }.sum()
             val arr = CharArray(size)
-            System.arraycopy(symbols, 0, arr, 0, symbols.size)
+            symbols.copyInto(arr, 0, 0, size)
             var index = symbols.size
             for (symbolRange in symbolRanges) {
                 for (i in symbolRange.from..symbolRange.to) {

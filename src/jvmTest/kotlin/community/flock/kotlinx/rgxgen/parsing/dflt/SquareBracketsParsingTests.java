@@ -1,11 +1,9 @@
-package community.flock.kotlinx.rgxgen.dflt;
+package community.flock.kotlinx.rgxgen.parsing.dflt;
 
 import community.flock.kotlinx.rgxgen.model.MatchType;
 import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition;
 import community.flock.kotlinx.rgxgen.nodes.Node;
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet;
-import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder;
-import community.flock.kotlinx.rgxgen.parsing.dflt.RgxGenParseException;
 import community.flock.kotlinx.rgxgen.util.chars.CharList;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,8 +14,6 @@ import java.util.Collections;
 import java.util.stream.Stream;
 
 import static community.flock.kotlinx.rgxgen.model.SymbolRange.range;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class SquareBracketsParsingTests {

@@ -1,4 +1,4 @@
-package community.flock.kotlinx.rgxgen.dflt;
+package community.flock.kotlinx.rgxgen.parsing.dflt;
 
 /* **************************************************************************
    Copyright 2019 Vladislavs Varslavans
@@ -17,7 +17,6 @@ package community.flock.kotlinx.rgxgen.dflt;
 /* **************************************************************************/
 
 
-import community.flock.kotlinx.rgxgen.parsing.dflt.CharIterator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

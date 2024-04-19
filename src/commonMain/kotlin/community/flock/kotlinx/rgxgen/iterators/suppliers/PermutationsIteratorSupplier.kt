@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.PermutationsIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -20,12 +19,10 @@ import java.util.function.Supplier
   limitations under the License.
 / * **************************************************************************/
 
-class PermutationsIteratorSupplier(private val aSuppliers: List<Supplier<StringIterator>>) :
-    Supplier<StringIterator> {
+class PermutationsIteratorSupplier(private val aSuppliers: List<Supplier<StringIterator>>) : Supplier<StringIterator> {
     override fun get(): StringIterator {
         return if (aSuppliers.size == 1) {
-            aSuppliers[0]
-                .get()
+            aSuppliers[0].get()
         } else {
             PermutationsIterator(aSuppliers)
         }

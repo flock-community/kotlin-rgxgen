@@ -4,10 +4,9 @@ import community.flock.kotlinx.rgxgen.model.SymbolRange
 import community.flock.kotlinx.rgxgen.model.SymbolRange.Companion.range
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider
 import community.flock.kotlinx.rgxgen.util.chars.CharList
-import java.math.BigInteger
-import java.util.*
-import java.util.stream.Collectors
-import java.util.stream.Stream
+import kotlin.jvm.JvmStatic
+import kotlin.math.pow
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -39,9 +38,9 @@ object Util {
             return ""
         }
         val result = CharArray(times)
-        Arrays.fill(result, c)
+        result.fill(c)
 
-        return String(result)
+        return result.concatToString()
     }
 
     /**
@@ -52,14 +51,14 @@ object Util {
      * @return string with random characters changed case.
      */
     @JvmStatic
-    fun randomlyChangeCase(rnd: Random, input: String?): String {
+    fun randomlyChangeCase(rnd: Random, input: String): String {
         val sb = StringBuilder(input)
         for (i in 0 until sb.length) {
             val currentChar = sb[i]
-            if (Character.isUpperCase(currentChar) && rnd.nextBoolean()) {
-                sb.setCharAt(i, currentChar.lowercaseChar())
-            } else if (Character.isLowerCase(currentChar) && rnd.nextBoolean()) {
-                sb.setCharAt(i, currentChar.uppercaseChar())
+            if (currentChar.isUpperCase() && rnd.nextBoolean()) {
+                sb.set(i, currentChar.lowercaseChar())
+            } else if (currentChar.isLowerCase() && rnd.nextBoolean()) {
+                sb.set(i, currentChar.uppercaseChar())
             }
         }
 
@@ -76,11 +75,11 @@ object Util {
      * @return number of variations.
      */
     @JvmStatic
-    fun countCaseInsensitiveVariations(value: String): BigInteger {
-        val switchableCase = value.chars()
-            .map { c: Int -> if (Character.isUpperCase(c) || Character.isLowerCase(c)) 1 else 0 }
+    fun countCaseInsensitiveVariations(value: String): Long {
+        val switchableCase = value.toList()
+            .map { c -> if (c.isLowerCase() || c.isUpperCase()) 1 else 0 }
             .sum()
-        return ConstantsProvider.BIG_INTEGER_TWO.pow(switchableCase)
+        return ConstantsProvider.LONG_TWO.pow(switchableCase)
     }
 
     /**
@@ -92,14 +91,14 @@ object Util {
      * @return index of next case sensitive character or `empty` if no such character present
      */
     @JvmStatic
-    fun indexOfNextCaseSensitiveCharacter(text: CharSequence, startIndex: Int): OptionalInt {
+    fun indexOfNextCaseSensitiveCharacter(text: CharSequence, startIndex: Int): Int? {
         for (i in startIndex until text.length) {
             val c = text[i]
-            if (Character.isLowerCase(c) || Character.isUpperCase(c)) {
-                return OptionalInt.of(i)
+            if (c.isLowerCase() || c.isUpperCase()) {
+                return i
             }
         }
-        return OptionalInt.empty()
+        return null
     }
 
     /**
@@ -184,11 +183,11 @@ object Util {
         val list: MutableList<SymbolRange> = ArrayList(symbolRanges.size + symbolRanges.size)
 
         symbolRanges
-            .stream()
             .filter { range: SymbolRange -> range.to >= firstCharInRange && range.from <= lastCharInRange }
             .forEach { e: SymbolRange -> list.add(e) }
+
         symbols
-            .stream()
+            .list()
             .filter { c: Char -> firstCharInRange <= c.code && c.code <= lastCharInRange }
             .map { symbol: Char? ->
                 range(
@@ -197,7 +196,7 @@ object Util {
             }
             .forEach { e: SymbolRange -> list.add(e) }
 
-        list.sortWith(Comparator.comparing(SymbolRange::from))
+        list.sortBy { it.from }
         return list
     }
 
@@ -206,17 +205,15 @@ object Util {
         originalSymbolRanges: List<SymbolRange>, originalSymbols: CharList,
         compactedRanges: MutableList<SymbolRange>, compactedSymbols: CharList
     ) {
-        val sortedRanges = Stream
-            .concat(
-                originalSymbolRanges.stream(),
-                originalSymbols.stream().map { symbol: Char? ->
+        val sortedRanges = (
+                originalSymbolRanges + originalSymbols.list().map { symbol: Char? ->
                     range(
                         symbol!!, symbol
                     )
                 }
             )
-            .sorted(Comparator.comparing(SymbolRange::from))
-            .collect(Collectors.toList())
+            .sortedBy { it.from }
+            .toMutableList()
 
         if (sortedRanges.size == 1) {
             compactedSymbols.addAll(originalSymbols)
@@ -258,4 +255,19 @@ object Util {
     fun isRightWithinLeft(left: SymbolRange, right: SymbolRange): Boolean {
         return left.from <= right.from && left.to >= right.to
     }
+
+    /**
+     * This method helps to overcome the issue that is described here: StrangeBehaviourTests::randomIsNotSoRandomTest
+     *
+     * @param seed seed value
+     * @return new Random()
+     */
+    @JvmStatic
+    fun newRandom(seed: Int): Random {
+        return Random(seed)
+    }
+
+    fun Long.pow(exponent: Long): Long = toDouble().pow(exponent.toDouble()).toLong()
+    fun Long.pow(exponent: Int): Long = toDouble().pow(exponent.toDouble()).toLong()
+
 }

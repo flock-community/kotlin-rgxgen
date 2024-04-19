@@ -1,6 +1,5 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.iterators.StringIterator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

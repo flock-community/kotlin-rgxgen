@@ -1,7 +1,7 @@
 package community.flock.kotlinx.rgxgen.iterators
 
-import java.util.*
-import java.util.function.Supplier
+import community.flock.kotlinx.rgxgen.iterators.suppliers.Supplier
+import kotlin.NoSuchElementException
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -26,8 +26,7 @@ class PermutationsIterator(iteratorsSuppliers: List<Supplier<StringIterator>>) :
 
     init {
         for (i in aIterators.indices) {
-            val iterator = iteratorsSuppliers[i]
-                .get()
+            val iterator = iteratorsSuppliers[i].get()
             aIterators[i] = iterator
         }
 
@@ -36,8 +35,8 @@ class PermutationsIterator(iteratorsSuppliers: List<Supplier<StringIterator>>) :
     }
 
     override fun hasNext(): Boolean {
-        return !aInitialized || Arrays.stream(aIterators)
-            .anyMatch { obj: StringIterator? -> obj!!.hasNext() }
+        return !aInitialized || aIterators
+            .any { obj: StringIterator? -> obj!!.hasNext() }
     }
 
     override fun next(): String? {
@@ -74,8 +73,8 @@ class PermutationsIterator(iteratorsSuppliers: List<Supplier<StringIterator>>) :
     }
 
     override fun current(): String? {
-        return Arrays.stream(aIterators)
+        return aIterators
             .map { obj: StringIterator? -> obj!!.current() }
-            .reduce("") { obj: String?, str: String? -> obj + str }
+            .fold("") { obj: String?, str: String? -> obj + str }
     }
 }

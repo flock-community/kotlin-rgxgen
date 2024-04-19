@@ -1,7 +1,7 @@
 package community.flock.kotlinx.rgxgen.iterators
 
-import java.util.*
-import java.util.function.Supplier
+import community.flock.kotlinx.rgxgen.iterators.suppliers.Supplier
+import kotlin.NoSuchElementException
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -47,8 +47,8 @@ class IncrementalLengthIterator(private val aSupplier: Supplier<StringIterator>,
     }
 
     private fun hasMoreForCurrentLength(): Boolean {
-        return Arrays.stream(aCurrentIterators)
-            .anyMatch { obj: StringIterator? -> obj!!.hasNext() }
+        return aCurrentIterators
+            .any { obj: StringIterator? -> obj!!.hasNext() }
     }
 
     override fun hasNext(): Boolean {
@@ -110,8 +110,8 @@ class IncrementalLengthIterator(private val aSupplier: Supplier<StringIterator>,
     }
 
     override fun current(): String? {
-        return Arrays.stream(aCurrentIterators)
+        return aCurrentIterators
             .map { obj: StringIterator? -> obj!!.current() }
-            .reduce("") { obj: String?, str: String? -> obj + str }
+            .fold("") { obj: String?, str: String? -> obj + str }
     }
 }

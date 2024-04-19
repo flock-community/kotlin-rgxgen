@@ -1,13 +1,11 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.iterators.StringIterator;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
 import java.util.regex.Pattern;
 
-import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.BIG_INTEGER_TWO;
+import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.LONG_TWO;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RegressionTests {
@@ -31,8 +29,7 @@ public class RegressionTests {
         RgxGen rgxGen = RgxGen.parse(pattern);
         assertNotNull(rgxGen); // Not throwing an exception is a success
         StringIterator stringIterator = rgxGen.iterateUnique();
-        assertEquals(BIG_INTEGER_TWO, rgxGen.getUniqueEstimation()
-                                            .orElse(null));
+        assertEquals(LONG_TWO, rgxGen.getUniqueEstimation());
         assertEquals("1", stringIterator.next());
         assertEquals("2", stringIterator.next());
         assertFalse(stringIterator.hasNext());
@@ -44,8 +41,7 @@ public class RegressionTests {
         final RgxGen rgxGen = RgxGen.parse(pattern);
         assertNotNull(rgxGen); // Not throwing an exception is a success
         final StringIterator stringIterator = rgxGen.iterateUnique();
-        assertEquals(BigInteger.valueOf(2), rgxGen.getUniqueEstimation()
-                                                  .orElse(null));
+        assertEquals(Long.valueOf(2), rgxGen.getUniqueEstimation());
         assertEquals("x", stringIterator.next());
         assertEquals("y", stringIterator.next());
         assertFalse(stringIterator.hasNext());

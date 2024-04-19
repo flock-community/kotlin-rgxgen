@@ -2,8 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.NegativeStringIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
-import java.util.regex.Pattern
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -21,12 +19,9 @@ import java.util.regex.Pattern
   limitations under the License.
 / * **************************************************************************/
 
-class NegativeIteratorSupplier(pattern: String?, private val aIteratorSupplier: Supplier<StringIterator>) :
-    Supplier<StringIterator> {
-    private val aPattern: Pattern = Pattern.compile(pattern)
-
+class NegativeIteratorSupplier(val pattern: String, private val aIteratorSupplier: Supplier<StringIterator>) : Supplier<StringIterator> {
 
     override fun get(): StringIterator {
-        return NegativeStringIterator(aIteratorSupplier.get(), aPattern)
+        return NegativeStringIterator(aIteratorSupplier.get(), pattern)
     }
 }

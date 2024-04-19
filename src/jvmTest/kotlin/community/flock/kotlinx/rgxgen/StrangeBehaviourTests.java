@@ -1,10 +1,10 @@
 package community.flock.kotlinx.rgxgen;
 
 
+import community.flock.kotlinx.rgxgen.util.Util;
+import kotlin.random.Random;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.util.Random;
 
 public class StrangeBehaviourTests {
 
@@ -16,10 +16,10 @@ public class StrangeBehaviourTests {
         final int LIMIT_VALUE = 32;
         for (int seed = 0; seed < 10; seed++) {
             // Each time have different seed!!!!
-            Random random = new Random(seed);
+            Random random = Util.newRandom(seed);
             // NOTE: This value will be always the same
             System.out.println(random.nextInt(LIMIT_VALUE));
-            random = new Random(seed);
+            random = Util.newRandom(seed);
             // Here again - first value is always the same, while second value changes.
             System.out.println(random.nextInt(LIMIT_VALUE) + "->" + random.nextInt(LIMIT_VALUE));
         }

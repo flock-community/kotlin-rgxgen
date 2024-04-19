@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("org.jetbrains.dokka") version "1.8.10"
-    kotlin("multiplatform") version "1.8.21"
+    kotlin("multiplatform") version "1.9.23"
     kotlin("plugin.serialization") version "1.5.21"
 }
 
@@ -109,8 +109,9 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
                 implementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
                 implementation("org.junit.platform:junit-platform-suite:1.10.2")
+                implementation("org.openjdk.jmh:jmh-core:1.37")
+                implementation("org.openjdk.jmh-generator-annprocess:1.37")
             }
         }
     }
 }
-

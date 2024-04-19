@@ -1,6 +1,5 @@
 package community.flock.kotlinx.rgxgen.iterators;
 
-import community.flock.kotlinx.rgxgen.iterators.CaseVariationIterator;
 import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

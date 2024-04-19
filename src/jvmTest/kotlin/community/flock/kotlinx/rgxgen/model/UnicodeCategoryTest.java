@@ -2,11 +2,10 @@ package community.flock.kotlinx.rgxgen.model;
 
 import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.iterators.StringIterator;
-import community.flock.kotlinx.rgxgen.model.SymbolRange;
-import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
 import community.flock.kotlinx.rgxgen.model.data.CategoryTestData;
 import community.flock.kotlinx.rgxgen.util.Util;
 import community.flock.kotlinx.rgxgen.util.chars.CharList;
+import kotlin.random.Random;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -14,11 +13,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.UNICODE_SYMBOL_RANGE;
-import static community.flock.kotlinx.rgxgen.testutil.TestingUtilities.newRandom;
+import static community.flock.kotlinx.rgxgen.util.Util.newRandom;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UnicodeCategoryTest {

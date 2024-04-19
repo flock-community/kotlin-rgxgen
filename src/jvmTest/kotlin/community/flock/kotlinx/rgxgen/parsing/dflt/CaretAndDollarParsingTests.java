@@ -1,17 +1,14 @@
-package community.flock.kotlinx.rgxgen.dflt;
+package community.flock.kotlinx.rgxgen.parsing.dflt;
 
 import community.flock.kotlinx.rgxgen.nodes.*;
 import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder;
-import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder;
-import community.flock.kotlinx.rgxgen.parsing.dflt.PatternDoesNotMatchAnythingException;
-import community.flock.kotlinx.rgxgen.parsing.dflt.RgxGenParseException;
-import community.flock.kotlinx.rgxgen.parsing.dflt.TokenNotQuantifiableException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class CaretAndDollarParsingTests {

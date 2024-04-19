@@ -2,7 +2,7 @@ package community.flock.kotlinx.rgxgen.visitors
 
 import community.flock.kotlinx.rgxgen.config.RgxGenProperties
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
-import java.util.*
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

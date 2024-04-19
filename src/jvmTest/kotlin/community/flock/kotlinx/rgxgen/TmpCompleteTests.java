@@ -1,6 +1,6 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
+import community.flock.kotlinx.rgxgen.util.Util;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static community.flock.kotlinx.rgxgen.testutil.TestingUtilities.newRandom;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,7 +44,7 @@ public class TmpCompleteTests {
     @MethodSource("getTestData")
     public void generateTest(String name, boolean useFind, String pattern, int seed) {
         RgxGen rgxGen = RgxGen.parse(pattern);
-        String s = rgxGen.generate(newRandom(seed));
+        String s = rgxGen.generate(Util.newRandom(seed));
         assertTrue(matches(s, pattern, useFind), "Text: '" + s + "' does not match pattern " + pattern);
     }
 
@@ -53,7 +52,7 @@ public class TmpCompleteTests {
     @MethodSource("getTestData")
     public void generateNotMatchingTest(String name, boolean useFind, String pattern, int seed) {
         RgxGen rgxGen = RgxGen.parse(pattern);
-        String s = rgxGen.generateNotMatching(newRandom(seed));
+        String s = rgxGen.generateNotMatching(Util.newRandom(seed));
         assertFalse(matches(s, pattern, useFind), "Text: '" + s + "' does not match pattern " + pattern);
     }
 

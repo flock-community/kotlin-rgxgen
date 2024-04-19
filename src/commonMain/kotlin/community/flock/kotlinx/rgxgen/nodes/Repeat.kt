@@ -1,6 +1,7 @@
 package community.flock.kotlinx.rgxgen.nodes
 
 import community.flock.kotlinx.rgxgen.visitors.NodeVisitor
+import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

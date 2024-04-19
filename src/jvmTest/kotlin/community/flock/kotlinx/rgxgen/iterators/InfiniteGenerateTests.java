@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen.iterators;
 
 import community.flock.kotlinx.rgxgen.RgxGen;
-import community.flock.kotlinx.rgxgen.iterators.StringIterator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

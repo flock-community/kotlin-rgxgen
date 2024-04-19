@@ -8,7 +8,6 @@ import community.flock.kotlinx.rgxgen.nodes.*;
 import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
 import community.flock.kotlinx.rgxgen.util.chars.CharList;
 
-import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -440,7 +439,7 @@ public enum TestPattern implements DataInterface {
     final String aPattern;
     final Node   aResultNode;
 
-    BigInteger   aEstimatedCount;
+    Long   aEstimatedCount;
     List<String> aAllUniqueValues;
     boolean      aIsUsableWithJavaPattern;
 
@@ -459,7 +458,7 @@ public enum TestPattern implements DataInterface {
         return aResultNode;
     }
 
-    public BigInteger getEstimatedCount() {
+    public Long getEstimatedCount() {
         return aEstimatedCount;
     }
 
@@ -477,7 +476,7 @@ public enum TestPattern implements DataInterface {
 
     protected final void setAllUniqueValues(List<String> values) {
         aAllUniqueValues = values;
-        aEstimatedCount = BigInteger.valueOf(values.size());
+        aEstimatedCount = Long.valueOf(values.size());
     }
 
     protected final void setCannotCompilePattern() {

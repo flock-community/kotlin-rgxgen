@@ -1,8 +1,6 @@
 package community.flock.kotlinx.rgxgen.model;
 
 
-import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
-
 import java.util.regex.Pattern;
 
 public class RgxGenTestPattern {

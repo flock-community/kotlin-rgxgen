@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.manual.generator.unicode;
 
 import community.flock.kotlinx.rgxgen.model.SymbolRange;
 import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
-import community.flock.kotlinx.rgxgen.util.chars.CharList;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +31,7 @@ class UnicodeCategoryExclusionOfNonPrintableCharacters {
                                                                                             stream(symbols).map(c -> new Pair(unicodeCategory, c)),
                                                                                             unicodeCategory.symbolRanges.stream()
                                                                                                            .map(SymbolRange::chars)
-                                                                                                           .flatMap(CharList::stream)
+                                                                                                           .flatMap(it ->  it.list().stream())
                                                                                                            .map(c -> new Pair(unicodeCategory, c)));
                                                                                 }
                                                                        )

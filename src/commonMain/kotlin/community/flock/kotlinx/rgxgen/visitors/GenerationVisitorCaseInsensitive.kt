@@ -4,7 +4,7 @@ import community.flock.kotlinx.rgxgen.config.RgxGenProperties
 import community.flock.kotlinx.rgxgen.nodes.FinalSymbol
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
 import community.flock.kotlinx.rgxgen.util.Util.randomlyChangeCase
-import java.util.*
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

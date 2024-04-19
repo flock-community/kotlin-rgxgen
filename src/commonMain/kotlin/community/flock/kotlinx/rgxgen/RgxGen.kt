@@ -8,9 +8,9 @@ import community.flock.kotlinx.rgxgen.visitors.GenerationVisitor
 import community.flock.kotlinx.rgxgen.visitors.NotMatchingGenerationVisitor
 import community.flock.kotlinx.rgxgen.visitors.UniqueGenerationVisitor
 import community.flock.kotlinx.rgxgen.visitors.UniqueValuesCountingVisitor
-import java.math.BigInteger
-import java.util.*
-import java.util.stream.Stream
+import kotlin.jvm.JvmOverloads
+import kotlin.jvm.JvmStatic
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -39,7 +39,7 @@ class RgxGen private constructor(private val properties: RgxGenProperties<*>?, p
         node = defaultTreeBuilder.get()
     }
 
-    val uniqueEstimation: Optional<BigInteger>
+    val uniqueEstimation: Long?
         /**
          * Returns estimation of unique values that can be generated with the pattern.
          *
@@ -59,8 +59,16 @@ class RgxGen private constructor(private val properties: RgxGenProperties<*>?, p
      * @return stream of randomly generated strings
      * @see RgxGen.generate
      */
-    fun stream(): Stream<String> {
-        return Stream.generate { this.generate() }
+    fun stream(): Iterator<String> {
+        return object : Iterator<String> {
+            override fun hasNext(): Boolean {
+                return true
+            }
+
+            override fun next(): String {
+                return this@RgxGen.generate()
+            }
+        }
     }
 
     /**
@@ -87,7 +95,7 @@ class RgxGen private constructor(private val properties: RgxGenProperties<*>?, p
      * @return matching random string
      */
     @JvmOverloads
-    fun generate(random: Random? = Random()): String {
+    fun generate(random: Random? = Random.Default): String {
         val gv = GenerationVisitor.builder()
             .withRandom(random)
             .withProperties(properties)
@@ -109,7 +117,7 @@ class RgxGen private constructor(private val properties: RgxGenProperties<*>?, p
      * @return not matching random string.
      */
     @JvmOverloads
-    fun generateNotMatching(random: Random? = Random()): String {
+    fun generateNotMatching(random: Random? = Random.Default): String {
         val nmgv = NotMatchingGenerationVisitor.builder()
             .withRandom(random)
             .get()

@@ -18,17 +18,14 @@ package community.flock.kotlinx.rgxgen.config;
 
 
 import community.flock.kotlinx.rgxgen.RgxGen;
-import community.flock.kotlinx.rgxgen.config.RgxGenOption;
-import community.flock.kotlinx.rgxgen.config.RgxGenProperties;
 import community.flock.kotlinx.rgxgen.model.RgxGenCharsDefinition;
 import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
+import community.flock.kotlinx.rgxgen.util.Util;
+import kotlin.random.Random;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
-import java.util.Random;
 import java.util.regex.Pattern;
 
-import static community.flock.kotlinx.rgxgen.testutil.TestingUtilities.newRandom;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DotMatchesOnlyOptionTest {
@@ -49,7 +46,7 @@ class DotMatchesOnlyOptionTest {
         RgxGenProperties properties = new RgxGenProperties();
         String permittedCharacters = "abc";
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
-        Random random = newRandom(100500);
+        Random random = Util.newRandom(100500);
         RgxGen rgxGen = RgxGen.parse(properties, ".");
         for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
             String generatedValue = rgxGen.generate(random);
@@ -62,7 +59,7 @@ class DotMatchesOnlyOptionTest {
         RgxGenProperties properties = new RgxGenProperties();
         Pattern pattern = Pattern.compile("\\p{InCyrillic}");
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(UnicodeCategory.IN_CYRILLIC));
-        Random random = newRandom(100500);
+        Random random = Util.newRandom(100500);
         RgxGen rgxGen = RgxGen.parse(properties, ".");
         for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
             String generatedValue = rgxGen.generate(random);
@@ -75,7 +72,7 @@ class DotMatchesOnlyOptionTest {
         RgxGenProperties properties = new RgxGenProperties();
         Pattern pattern = Pattern.compile("\\p{InCyrillic}");
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(UnicodeCategory.IN_CYRILLIC));
-        Random random = newRandom(100500);
+        Random random = Util.newRandom(100500);
         RgxGen rgxGen = RgxGen.parse(properties, ".");
         for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
             String generatedValue = rgxGen.generateNotMatching(random);
@@ -89,7 +86,7 @@ class DotMatchesOnlyOptionTest {
         String permittedCharacters = "abcABC";
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of("abc"));
         RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
-        Random random = newRandom(100500);
+        Random random = Util.newRandom(100500);
         RgxGen rgxGen = RgxGen.parse(properties, ".");
         for (int i = 0; i < COUNT_OF_ITERATIONS; i++) {
             String generatedValue = rgxGen.generate(random);
@@ -103,7 +100,7 @@ class DotMatchesOnlyOptionTest {
         String permittedCharacters = "abc";
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
         RgxGen rgxGen = RgxGen.parse(properties, ".");
-        assertEquals(BigInteger.valueOf(3), rgxGen.getUniqueEstimation().get());
+        assertEquals(Long.valueOf(3), rgxGen.getUniqueEstimation());
     }
 
     @Test
@@ -113,6 +110,6 @@ class DotMatchesOnlyOptionTest {
         RgxGenOption.DOT_MATCHES_ONLY.setInProperties(properties, RgxGenCharsDefinition.of(permittedCharacters));
         RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
         RgxGen rgxGen = RgxGen.parse(properties, ".");
-        assertEquals(BigInteger.valueOf(6), rgxGen.getUniqueEstimation().get());
+        assertEquals(Long.valueOf(6), rgxGen.getUniqueEstimation());
     }
 }

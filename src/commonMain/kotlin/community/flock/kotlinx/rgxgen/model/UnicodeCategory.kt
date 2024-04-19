@@ -1,11 +1,10 @@
+@file:OptIn(ExperimentalStdlibApi::class)
+
 package community.flock.kotlinx.rgxgen.model
 
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider
 import community.flock.kotlinx.rgxgen.util.Util
-import java.util.*
-import java.util.function.Function
-import java.util.stream.Collectors
-import java.util.stream.Stream
+import kotlin.jvm.JvmField
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -35,7 +34,7 @@ enum class UnicodeCategory(
     ANY_LETTER(
         keys("L", "Letter"),
         "Any kind of letter from any language",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_UPPERCASE_LATIN_ALPHABET,
             UnicodeCategoryConstants.BASIC_LATIN_LOWERCASE_LATIN_ALPHABET,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LETTERS,
@@ -396,7 +395,7 @@ enum class UnicodeCategory(
     LOWERCASE_LETTER(
         keys("Ll", "Lowercase_Letter"),
         "a lowercase letter that has an uppercase variant.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_LOWERCASE_LATIN_ALPHABET,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LOWERCASE_LETTERS,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LETTERS_1,
@@ -1010,7 +1009,7 @@ enum class UnicodeCategory(
     UPPERCASE_LETTER(
         keys("Lu", "Uppercase_Letter"),
         "an uppercase letter that has a lowercase variant.",
-        Arrays.asList<SymbolRange>(
+        listOf(
             UnicodeCategoryConstants.BASIC_LATIN_UPPERCASE_LATIN_ALPHABET,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LETTERS,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_UPPERCASE_LETTERS,
@@ -1616,7 +1615,7 @@ enum class UnicodeCategory(
     TITLECASE_LETTER(
         keys("Lt", "Titlecase_Letter"),
         "a letter that appears at the start of a word when only the first letter of the word is capitalized.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.GREEK_EXTENDED_PRECOMPOSED_POLYTONIC_GREEK_SUBSET_8,
             UnicodeCategoryConstants.GREEK_EXTENDED_PRECOMPOSED_POLYTONIC_GREEK_SUBSET_18,
             UnicodeCategoryConstants.GREEK_EXTENDED_PRECOMPOSED_POLYTONIC_GREEK_SUBSET_30
@@ -1632,7 +1631,7 @@ enum class UnicodeCategory(
     MODIFIER_LETTER(
         keys("Lm", "Modifier_Letter"),
         "a special character that is used like a letter.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_LATIN_SUPERSCRIPT_MODIFIER_LETTERS_TO_MISCELLANEOUS_PHONETIC_MODIFIERS,
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_MISCELLANEOUS_PHONETIC_MODIFIERS_SUBSET_1,
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_ADDITIONS_BASED_ON_1989_IPA_SUBSET,
@@ -1691,7 +1690,7 @@ enum class UnicodeCategory(
     OTHER_LETTER(
         keys("Lo", "Other_Letter"),
         "a letter or ideograph that does not have lowercase and uppercase variants.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.LATIN_EXTENDED_B_AFRICAN_LETTERS_FOR_CLICKS,
             UnicodeCategoryConstants.CYRILLIC_SUPPLEMENT_BASED_ON_ISO_8859_8_SUBSET,
             UnicodeCategoryConstants.CYRILLIC_SUPPLEMENT_SIGN_TO_YIDDISH_DIGRAPHS,
@@ -1964,7 +1963,7 @@ enum class UnicodeCategory(
     MARK(
         keys("M", "Mark"),
         "a character intended to be combined with another character (e.g. accents, umlauts, enclosing boxes, etc.).",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.COMBINING_DIACRITICAL_MARKS_ORDINARY_DIACRITICS_TO_MEDIEVAL_SUPERSCRIPT_LETTER_DIACRITICS,
             UnicodeCategoryConstants.CYRILLIC_HISTORIC_MISCELLANEOUS_SUBSET_1,
             UnicodeCategoryConstants.CYRILLIC_SUPPLEMENT_CANTILLATION_MARKS_TO_POINTS_AND_PUNCTUATION,
@@ -2154,7 +2153,7 @@ enum class UnicodeCategory(
     NON_SPACING_MARK(
         keys("Mn", "Non_Spacing_Mark"),
         "a character intended to be combined with another character without taking up extra space (e.g. accents, umlauts, etc.).",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.COMBINING_DIACRITICAL_MARKS_ORDINARY_DIACRITICS_TO_MEDIEVAL_SUPERSCRIPT_LETTER_DIACRITICS,
             UnicodeCategoryConstants.CYRILLIC_HISTORIC_MISCELLANEOUS_SUBSET,
             UnicodeCategoryConstants.CYRILLIC_SUPPLEMENT_CANTILLATION_MARKS_TO_POINTS_AND_PUNCTUATION,
@@ -2367,7 +2366,7 @@ enum class UnicodeCategory(
     SPACING_COMBINING_MARK(
         keys("Mc", "Spacing_Combining_Mark"),
         "a character intended to be combined with another character that takes up extra space (vowel signs in many Eastern languages).",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.DEVANAGARI_DEPENDENT_VOWEL_SIGNS_SUBSET_2,
             UnicodeCategoryConstants.DEVANAGARI_DEPENDENT_VOWEL_SIGNS_SUBSET_1,
             UnicodeCategoryConstants.DEVANAGARI_DEPENDENT_VOWEL_SIGNS_2,
@@ -2482,7 +2481,7 @@ enum class UnicodeCategory(
     ENCLOSING_MARK(
         keys("Me", "Enclosing_Mark"),
         "a character that encloses the character it is combined with (circle, square, keycap, etc.).",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.CYRILLIC_HISTORIC_MISCELLANEOUS_SUBSET_2,
             UnicodeCategoryConstants.COMBINING_DIACRITICAL_MARKS_FOR_SYMBOLS_ENCLOSING_DIACRITICS,
             UnicodeCategoryConstants.COMBINING_DIACRITICAL_MARKS_FOR_SYMBOLS_ADDITIONAL_ENCLOSING_DIACRITICS,
@@ -2493,7 +2492,7 @@ enum class UnicodeCategory(
     SEPARATOR(
         keys("Z", "Separator"),
         "any kind of whitespace or invisible separator.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.GENERAL_PUNCTUATION_SPACES,
             UnicodeCategoryConstants.GENERAL_PUNCTUATION_SEPARATORS
         ),
@@ -2515,7 +2514,7 @@ enum class UnicodeCategory(
     SYMBOL(
         keys("S", "Symbol"),
         "math symbols, currency signs, dingbats, box-drawing characters, etc.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_MATHEMATICAL_OPERATORS,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LATIN_1_PUNCTUATION_AND_SYMBOLS_SUBSET_1,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LATIN_1_PUNCTUATION_AND_SYMBOLS_SUBSET_2,
@@ -2651,7 +2650,7 @@ enum class UnicodeCategory(
         '꭛'
     ),
     MATH_SYMBOL(
-        keys("Sm", "Math_Symbol"), "any mathematical symbol.", Arrays.asList<SymbolRange>(
+        keys("Sm", "Math_Symbol"), "any mathematical symbol.", listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_MATHEMATICAL_OPERATORS,
             UnicodeCategoryConstants.ARABIC_RADIX_SYMBOLS_TO_RADIX_SYMBOLS,
             UnicodeCategoryConstants.SUPERSCRIPTS_AND_SUBSCRIPTS_SUPERSCRIPTS_SUBSET_1,
@@ -2679,7 +2678,7 @@ enum class UnicodeCategory(
     CURRENCY_SYMBOL(
         keys("Sc", "Currency_Symbol"),
         "any currency sign.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LATIN_1_PUNCTUATION_AND_SYMBOLS_SUBSET,
             UnicodeCategoryConstants.NKO_CURRENCY_SYMBOLS,
             UnicodeCategoryConstants.BENGALI_CURRENCY_SYMBOLS,
@@ -2698,7 +2697,7 @@ enum class UnicodeCategory(
     MODIFIER_SYMBOL(
         keys("Sk", "Modifier_Symbol"),
         "a combining character (mark) as a full character on its own.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_MISCELLANEOUS_PHONETIC_MODIFIERS_SUBSET,
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_MISCELLANEOUS_PHONETIC_MODIFIERS_TO_ADDITIONS_BASED_ON_1989_IPA,
             UnicodeCategoryConstants.SPACING_MODIFIER_LETTERS_TONE_LETTERS_TO_EXTENDED_BOPOMOFO_TONE_MARKS,
@@ -2729,7 +2728,7 @@ enum class UnicodeCategory(
     OTHER_SYMBOL(
         keys("So", "Other_Symbol"),
         "various symbols that are not math symbols, currency signs, or combining characters.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.CYRILLIC_SUPPLEMENT_RELIGIOUS_SYMBOLS,
             UnicodeCategoryConstants.ARABIC_POETIC_MARKS,
             UnicodeCategoryConstants.ARABIC_SIGNS_FOR_SINDHI,
@@ -2840,7 +2839,7 @@ enum class UnicodeCategory(
         '꠹'
     ),
     NUMBER(
-        keys("N", "Number"), "any kind of numeric character in any script.", Arrays.asList<SymbolRange>(
+        keys("N", "Number"), "any kind of numeric character in any script.", listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_DIGITS,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LATIN_1_PUNCTUATION_AND_SYMBOLS_SUBSET_4,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_VULGAR_FRACTIONS,
@@ -2908,7 +2907,7 @@ enum class UnicodeCategory(
     DECIMAL_DIGIT_NUMBER(
         keys("Nd", "Decimal_Digit_Number"),
         "a digit zero through nine in any script except ideographic scripts.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_DIGITS,
             UnicodeCategoryConstants.ARABIC_ARABIC_INDIC_DIGITS,
             UnicodeCategoryConstants.ARABIC_EASTERN_ARABIC_INDIC_DIGITS,
@@ -2950,7 +2949,7 @@ enum class UnicodeCategory(
     LETTER_NUMBER(
         keys("Nl", "Letter_Number"),
         "a number that looks like a letter, such as a Roman numeral.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.RUNIC_GOLDEN_NUMBER_RUNES,
             UnicodeCategoryConstants.NUMBER_FORMS_ROMAN_NUMERALS_TO_ARCHAIC_ROMAN_NUMERALS,
             UnicodeCategoryConstants.NUMBER_FORMS_ARCHAIC_ROMAN_NUMERALS_1,
@@ -2963,7 +2962,7 @@ enum class UnicodeCategory(
     OTHER_NUMBER(
         keys("No", "Other_Number"),
         "a superscript or subscript digit, or a number that is not a digit 0-9 (excluding numbers from ideographic scripts).",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_LATIN_1_PUNCTUATION_AND_SYMBOLS_SUBSET_4,
             UnicodeCategoryConstants.LATIN_1_SUPPLEMENT_VULGAR_FRACTIONS,
             UnicodeCategoryConstants.BENGALI_HISTORIC_SYMBOLS_FOR_FRACTIONAL_VALUES,
@@ -2998,7 +2997,7 @@ enum class UnicodeCategory(
     PUNCTUATION(
         keys("P", "Punctuation"),
         "any kind of punctuation character.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION_AND_SYMBOLS_SUBSET_1,
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION_AND_SYMBOLS_SUBSET_3,
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION,
@@ -3119,7 +3118,7 @@ enum class UnicodeCategory(
     DASH_PUNCTUATION(
         keys("Pd", "Dash_Punctuation"),
         "any kind of hyphen or dash.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.GENERAL_PUNCTUATION_DASHES,
             UnicodeCategoryConstants.SUPPLEMENTAL_PUNCTUATION_DASHES
         ),
@@ -3283,7 +3282,7 @@ enum class UnicodeCategory(
     OTHER_PUNCTUATION(
         keys("Po", "Other_Punctuation"),
         "any kind of punctuation character that is not a dash, bracket, quote or connector.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION_AND_SYMBOLS_SUBSET_1,
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION_AND_SYMBOLS_SUBSET_2,
             UnicodeCategoryConstants.BASIC_LATIN_ASCII_PUNCTUATION_SUBSET,
@@ -3403,7 +3402,7 @@ enum class UnicodeCategory(
     FORMAT(
         keys("Cf", "Format"),
         "invisible formatting indicator.",
-        Arrays.asList<SymbolRange>(
+        listOf<SymbolRange>(
             UnicodeCategoryConstants.ARABIC_SUBTENDING_MARKS_TO_SUBTENDING_MARKS,
             UnicodeCategoryConstants.GENERAL_PUNCTUATION_FORMAT_CHARACTERS,
             UnicodeCategoryConstants.GENERAL_PUNCTUATION_FORMAT_CHARACTERS_1,
@@ -3849,8 +3848,6 @@ enum class UnicodeCategory(
         *ConstantsProvider.ZERO_LENGTH_CHARACTER_ARRAY
     )
 
-    private class KeyValue(val key: String, val value: UnicodeCategory)
-
     fun contains(c: Char): Boolean {
         for (symbolRange in symbolRanges) {
             if (symbolRange.contains(c.code)) {
@@ -3869,28 +3866,18 @@ enum class UnicodeCategory(
 
     companion object {
         @JvmField
-        val ALL_CATEGORIES: Map<String, UnicodeCategory> = Collections.unmodifiableMap<String, UnicodeCategory>(
-            Arrays.stream<UnicodeCategory>(entries.toTypedArray())
-                .flatMap<KeyValue> { unicodeCategory: UnicodeCategory ->
-                    allowUseOfHyphenOrSpacesOrUnderscores(
-                        unicodeCategory
-                    )
-                }
-                .collect(Collectors.toMap<KeyValue, String, UnicodeCategory>(
-                    { obj: KeyValue -> obj.key },
-                    { obj: KeyValue -> obj.value }
-                )))
+        val ALL_CATEGORIES: Map<String, UnicodeCategory> = entries
+                .flatMap{ unicodeCategory: UnicodeCategory -> allowUseOfHyphenOrSpacesOrUnderscores(unicodeCategory) }
+                .toMap()
 
 
-
-        private fun allowUseOfHyphenOrSpacesOrUnderscores(unicodeCategory: UnicodeCategory): Stream<KeyValue> {
+        private fun allowUseOfHyphenOrSpacesOrUnderscores(unicodeCategory: UnicodeCategory): List<Pair<String, UnicodeCategory>> {
             val keys = Util.makeVariations(unicodeCategory.keys, '_', ' ', '-')
-            return keys.stream()
-                .map { key: String -> KeyValue(key, unicodeCategory) }
+            return keys.map { key: String -> key to unicodeCategory }
         }
     }
 }
 
 private fun keys(vararg keys: String): List<String> {
-    return Arrays.asList(*keys)
+    return listOf(*keys)
 }

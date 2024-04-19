@@ -3,7 +3,6 @@ package community.flock.kotlinx.rgxgen.visitors.helpers
 import community.flock.kotlinx.rgxgen.model.SymbolRange
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
 import community.flock.kotlinx.rgxgen.util.chars.CharList
-import java.util.*
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -25,7 +24,7 @@ import java.util.*
 class SymbolSetIndexer(symbolSet: SymbolSet) {
     private val symbols: CharList? = symbolSet.symbols
     private val symbolRanges: List<SymbolRange> = symbolSet.symbolRanges
-    private val rangeOffsets: IntArray
+    private val rangeOffsets: MutableList<Int>
     private val size: Int
 
     init {
@@ -33,7 +32,7 @@ class SymbolSetIndexer(symbolSet: SymbolSet) {
 
         val rangesCount = symbolRanges.size
         if (rangesCount > 0) {
-            rangeOffsets = IntArray(rangesCount)
+            rangeOffsets = mutableListOf(rangesCount)
             var currentOffset = 0
             rangeOffsets[0] = currentOffset
             for (i in 0 until rangesCount - 1) {
@@ -46,7 +45,7 @@ class SymbolSetIndexer(symbolSet: SymbolSet) {
             }
             tmpSize += symbolRanges[rangesCount - 1].size()
         } else {
-            rangeOffsets = IntArray(0)
+            rangeOffsets = mutableListOf(0)
         }
         size = tmpSize
     }
@@ -81,7 +80,7 @@ class SymbolSetIndexer(symbolSet: SymbolSet) {
     }
 
     private fun findRangeIndex(seed: Int): Int {
-        val i = Arrays.binarySearch(rangeOffsets, seed)
+        val i = rangeOffsets.binarySearch(seed)
         return if (i > 0) {
             i
         } else {

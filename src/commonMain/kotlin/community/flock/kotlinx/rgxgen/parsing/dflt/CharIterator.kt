@@ -1,8 +1,7 @@
 package community.flock.kotlinx.rgxgen.parsing.dflt
 
 import community.flock.kotlinx.rgxgen.util.Util.repeatChar
-import java.util.function.BiFunction
-import java.util.function.Predicate
+import kotlin.jvm.JvmOverloads
 import kotlin.math.max
 import kotlin.math.min
 
@@ -75,9 +74,8 @@ class CharIterator(private val aValue: String) {
             val c = aValue[aCurrentIndex]
             aCurrentIndex++
             return c
-        } catch (e: StringIndexOutOfBoundsException) {
+        } catch (e: Exception) {
             val noSuchElementException = NoSuchElementException(e.message)
-            noSuchElementException.initCause(e)
             throw noSuchElementException
         }
     }
@@ -164,12 +162,12 @@ class CharIterator(private val aValue: String) {
         return nextUntil({ str: String, fromIdx: Int? -> str.indexOf(s, fromIdx!!) }, s.length, false)
     }
 
-    private fun nextUntil(indexOf: BiFunction<String, Int, Int>, len: Int, mustExist: Boolean): String {
+    private fun nextUntil(indexOf: (String, Int) -> Int, len: Int, mustExist: Boolean): String {
         val startIndex = aCurrentIndex
         val substringEnd: Int
         while (true) {
             // Find ending character
-            aCurrentIndex = indexOf.apply(aValue, aCurrentIndex)
+            aCurrentIndex = indexOf(aValue, aCurrentIndex)
             // Found, but outside of the bounds...
             if (aCurrentIndex + len > aBoundIndex) {
                 aCurrentIndex = aBoundIndex
@@ -218,10 +216,10 @@ class CharIterator(private val aValue: String) {
      * @param condition condition to test each character with
      * @return substring of characters that matches condition
      */
-    fun takeWhile(condition: Predicate<Char?>): String {
+    fun takeWhile(condition: (Char) -> Boolean): String {
         val startIndex = aCurrentIndex
         while (hasNext()) {
-            if (!condition.test(next())) {
+            if (!condition(next())) {
                 --aCurrentIndex
                 break
             }

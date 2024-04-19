@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.data;
 
 import community.flock.kotlinx.rgxgen.nodes.Node;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public interface DataInterface {
@@ -19,7 +18,7 @@ public interface DataInterface {
 
     Node getResultNode();
 
-    BigInteger getEstimatedCount();
+    Long getEstimatedCount();
 
     List<String> getAllUniqueValues();
 }

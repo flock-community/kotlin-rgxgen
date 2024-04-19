@@ -7,7 +7,7 @@ import community.flock.kotlinx.rgxgen.model.SymbolRange;
 import community.flock.kotlinx.rgxgen.nodes.*;
 import community.flock.kotlinx.rgxgen.parsing.NodeTreeBuilder;
 import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder;
-import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
+import community.flock.kotlinx.rgxgen.util.Util;
 import community.flock.kotlinx.rgxgen.visitors.GenerationVisitor;
 import community.flock.kotlinx.rgxgen.visitors.NotMatchingGenerationVisitor;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
@@ -62,7 +61,7 @@ public class NotMatchingGenerationTests {
         assertEquals(expectedNode.toString(), node.toString());
 
         GenerationVisitor visitor = NotMatchingGenerationVisitor.builder()
-                                                                .withRandom(TestingUtilities.newRandom(seed))
+                                                                .withRandom(Util.newRandom(seed))
                                                                 .get();
         node.visit(visitor);
         boolean matches = Pattern.compile(pattern)
@@ -82,7 +81,7 @@ public class NotMatchingGenerationTests {
         RgxGenProperties properties = new RgxGenProperties();
         RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
         GenerationVisitor visitor = NotMatchingGenerationVisitor.builder()
-                                                                .withRandom(TestingUtilities.newRandom(seed))
+                                                                .withRandom(Util.newRandom(seed))
                                                                 .withProperties(properties)
                                                                 .get();
         node.visit(visitor);

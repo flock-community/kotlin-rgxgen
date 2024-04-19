@@ -1,10 +1,8 @@
-package community.flock.kotlinx.rgxgen.dflt;
+package community.flock.kotlinx.rgxgen.parsing.dflt;
 
 import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.nodes.FinalSymbol;
 import community.flock.kotlinx.rgxgen.nodes.Node;
-import community.flock.kotlinx.rgxgen.parsing.dflt.DefaultTreeBuilder;
-import community.flock.kotlinx.rgxgen.parsing.dflt.RgxGenParseException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

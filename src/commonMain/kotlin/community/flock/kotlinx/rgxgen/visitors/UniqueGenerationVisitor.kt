@@ -14,6 +14,7 @@ import community.flock.kotlinx.rgxgen.iterators.suppliers.PermutationsIteratorSu
 import community.flock.kotlinx.rgxgen.iterators.suppliers.ReferenceIteratorSupplier
 import community.flock.kotlinx.rgxgen.iterators.suppliers.SingleCaseInsensitiveValueIteratorSupplier
 import community.flock.kotlinx.rgxgen.iterators.suppliers.SingleValueIteratorSupplier
+import community.flock.kotlinx.rgxgen.iterators.suppliers.Supplier
 import community.flock.kotlinx.rgxgen.nodes.Choice
 import community.flock.kotlinx.rgxgen.nodes.FinalSymbol
 import community.flock.kotlinx.rgxgen.nodes.Group
@@ -23,7 +24,6 @@ import community.flock.kotlinx.rgxgen.nodes.Repeat
 import community.flock.kotlinx.rgxgen.nodes.Sequence
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
 import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.makeAsciiCharacterArray
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -131,7 +131,6 @@ class UniqueGenerationVisitor(
         )
     }
 
-    val uniqueStrings: StringIterator?
-        get() = aIterators[0]
-            .get()
+    val uniqueStrings: StringIterator
+        get() = aIterators[0].get()
 }

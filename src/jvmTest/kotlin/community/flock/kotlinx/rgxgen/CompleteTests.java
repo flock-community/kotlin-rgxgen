@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
-import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
+import community.flock.kotlinx.rgxgen.util.Util;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -79,7 +78,7 @@ public class CompleteTests {
     @MethodSource("getData")
     public void generateTest(String aName, boolean aUseFind, String aRegex, int aSeed) {
         RgxGen rgxGen = RgxGen.parse(aRegex);
-        String s = rgxGen.generate(TestingUtilities.newRandom(aSeed));
+        String s = rgxGen.generate(Util.newRandom(aSeed));
         assertTrue(matches(aRegex, s, aUseFind), "Text: '" + s + "'does not match pattern " + aRegex);
     }
 
@@ -87,7 +86,7 @@ public class CompleteTests {
     @MethodSource("getData")
     public void generateNotMatchingTest(String aName, boolean aUseFind, String aRegex, int aSeed) {
         RgxGen rgxGen = RgxGen.parse(aRegex);
-        String s = rgxGen.generateNotMatching(TestingUtilities.newRandom(aSeed));
+        String s = rgxGen.generateNotMatching(Util.newRandom(aSeed));
         assertFalse(matches(aRegex, s, aUseFind), "Text: '" + s + "'does not match pattern " + aRegex);
     }
 

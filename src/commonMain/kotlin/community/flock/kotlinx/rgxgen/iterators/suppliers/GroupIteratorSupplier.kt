@@ -2,7 +2,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 
 import community.flock.kotlinx.rgxgen.iterators.ReferenceIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -29,7 +28,7 @@ class GroupIteratorSupplier(
     override fun get(): StringIterator {
         val stringIterator = aIteratorSupplier.get()
         aGroupIteratorsMap[aIndex] = stringIterator
-        val orDefault = aReferenceIteratorMap.getOrDefault(aIndex, emptyList())
+        val orDefault = aReferenceIteratorMap.get(aIndex) ?: emptyList()
         for (referenceIterator in orDefault) {
             referenceIterator.setOther(stringIterator)
         }

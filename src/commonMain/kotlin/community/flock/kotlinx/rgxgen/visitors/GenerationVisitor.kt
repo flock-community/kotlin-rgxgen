@@ -11,7 +11,8 @@ import community.flock.kotlinx.rgxgen.nodes.NotSymbol
 import community.flock.kotlinx.rgxgen.nodes.Repeat
 import community.flock.kotlinx.rgxgen.nodes.Sequence
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
-import java.util.*
+import kotlin.jvm.JvmStatic
+import kotlin.random.Random
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -75,7 +76,7 @@ open class GenerationVisitor(
     }
 
     override fun visit(node: GroupRef) {
-        aStringBuilder.append(aGroupValues.getOrDefault(node.index, ""))
+        aStringBuilder.append(aGroupValues.get(node.index).orEmpty())
     }
 
     override fun visit(node: Group) {

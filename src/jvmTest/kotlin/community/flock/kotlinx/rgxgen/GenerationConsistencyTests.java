@@ -1,10 +1,11 @@
 package community.flock.kotlinx.rgxgen;
 
-import community.flock.kotlinx.rgxgen.RgxGen;
 import community.flock.kotlinx.rgxgen.config.RgxGenOption;
 import community.flock.kotlinx.rgxgen.config.RgxGenProperties;
 import community.flock.kotlinx.rgxgen.data.TestPattern;
 import community.flock.kotlinx.rgxgen.data.TestPatternCaseInsensitive;
+import community.flock.kotlinx.rgxgen.util.Util;
+import kotlin.random.Random;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,12 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static community.flock.kotlinx.rgxgen.testutil.TestingUtilities.newRandom;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -87,7 +86,7 @@ public class GenerationConsistencyTests {
         RgxGenProperties properties = new RgxGenProperties();
         RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
         RgxGen rgxGen = RgxGen.parse(properties, data.getPattern());
-        Random random = newRandom(17);
+        Random random = Util.newRandom(17);
         for (int i = 0; i < NUM_ITERATIONS; i++) {
             String generated = rgxGen.generate(random);
             Files.write(fileName, singletonList(generated), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -102,7 +101,7 @@ public class GenerationConsistencyTests {
         RgxGenProperties properties = new RgxGenProperties();
         RgxGenOption.CASE_INSENSITIVE.setInProperties(properties, true);
         RgxGen rgxGen = RgxGen.parse(properties, data.getPattern());
-        Random random = newRandom(17);
+        Random random = Util.newRandom(17);
         for (int i = 0; i < NUM_ITERATIONS; i++) {
             String generated = rgxGen.generateNotMatching(random);
             Files.write(fileName, singletonList(generated), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -115,7 +114,7 @@ public class GenerationConsistencyTests {
         String name = data.name();
         Path fileName = caseSensitivePath.resolve("matching").resolve(createFileName(name)).toAbsolutePath();
         RgxGen rgxGen = RgxGen.parse(data.getPattern());
-        Random random = newRandom(17);
+        Random random = Util.newRandom(17);
         for (int i = 0; i < NUM_ITERATIONS; i++) {
             String generated = rgxGen.generate(random);
             Files.write(fileName, singletonList(generated), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -129,7 +128,7 @@ public class GenerationConsistencyTests {
         String name = data.name();
         Path fileName = caseSensitivePath.resolve("notmatching").resolve(createFileName(name)).toAbsolutePath();
         RgxGen rgxGen = RgxGen.parse(data.getPattern());
-        Random random = newRandom(17);
+        Random random = Util.newRandom(17);
         for (int i = 0; i < NUM_ITERATIONS; i++) {
             String generated = rgxGen.generateNotMatching(random);
             try {
@@ -159,7 +158,7 @@ public class GenerationConsistencyTests {
     public void generateTest(String name, boolean aUseFind, String aRegex, int aSeed) throws IOException {
         Path fileName = caseSensitivePath.resolve("matching").resolve(createFileName(name)).toAbsolutePath();
         RgxGen rgxGen = RgxGen.parse(aRegex);
-        String generated = rgxGen.generate(newRandom(aSeed));
+        String generated = rgxGen.generate(Util.newRandom(aSeed));
         try {
             Files.write(fileName, singletonList(generated), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (MalformedInputException e) {
@@ -175,7 +174,7 @@ public class GenerationConsistencyTests {
     public void generateNotMatchingTest(String name, boolean aUseFind, String aRegex, int aSeed) throws IOException {
         Path fileName = caseSensitivePath.resolve("notmatching").resolve(createFileName(name)).toAbsolutePath();
         RgxGen rgxGen = RgxGen.parse(aRegex);
-        String generated = rgxGen.generateNotMatching(newRandom(aSeed));
+        String generated = rgxGen.generateNotMatching(Util.newRandom(aSeed));
         try {
             Files.write(fileName, singletonList(generated), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (MalformedInputException e) {

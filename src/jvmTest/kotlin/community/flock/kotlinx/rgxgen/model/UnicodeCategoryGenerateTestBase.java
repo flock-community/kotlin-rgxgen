@@ -1,7 +1,5 @@
 package community.flock.kotlinx.rgxgen.model;
 
-import community.flock.kotlinx.rgxgen.model.SymbolRange;
-import community.flock.kotlinx.rgxgen.model.UnicodeCategory;
 import community.flock.kotlinx.rgxgen.model.data.CategoryTestData;
 import community.flock.kotlinx.rgxgen.util.chars.CharList;
 import org.junit.jupiter.api.*;

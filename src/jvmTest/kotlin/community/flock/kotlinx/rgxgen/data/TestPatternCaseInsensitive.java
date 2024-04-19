@@ -3,7 +3,6 @@ package community.flock.kotlinx.rgxgen.data;
 import community.flock.kotlinx.rgxgen.nodes.Node;
 import community.flock.kotlinx.rgxgen.testutil.TestingUtilities;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public enum TestPatternCaseInsensitive implements DataInterface {
 
     final String aPattern;
 
-    BigInteger   aEstimatedCount;
+    Long   aEstimatedCount;
     List<String> aAllUniqueValues;
 
     TestPatternCaseInsensitive(String pattern) {
@@ -61,7 +60,7 @@ public enum TestPatternCaseInsensitive implements DataInterface {
         return null;
     }
 
-    public BigInteger getEstimatedCount() {
+    public Long getEstimatedCount() {
         return aEstimatedCount;
     }
 
@@ -79,7 +78,7 @@ public enum TestPatternCaseInsensitive implements DataInterface {
 
     protected final void setAllUniqueValues(List<String> values) {
         aAllUniqueValues = values;
-        aEstimatedCount = BigInteger.valueOf(values.size());
+        aEstimatedCount = Long.valueOf(values.size());
     }
 
     public boolean hasEstimatedCount() {

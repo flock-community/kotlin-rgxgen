@@ -1,10 +1,9 @@
-package community.flock.kotlinx.rgxgen.helpers;
+package community.flock.kotlinx.rgxgen.visitors.helpers;
 
 import community.flock.kotlinx.rgxgen.model.MatchType;
 import community.flock.kotlinx.rgxgen.model.SymbolRange;
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet;
 import community.flock.kotlinx.rgxgen.util.chars.CharList;
-import community.flock.kotlinx.rgxgen.visitors.helpers.SymbolSetIndexer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,7 +18,6 @@ import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.DEL_
 import static community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.SPACE_ASCII_CODE;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 

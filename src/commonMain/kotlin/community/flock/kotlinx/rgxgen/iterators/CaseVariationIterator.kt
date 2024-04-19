@@ -1,7 +1,7 @@
 package community.flock.kotlinx.rgxgen.iterators
 
 import community.flock.kotlinx.rgxgen.util.Util
-import java.util.*
+import kotlin.NoSuchElementException
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -19,9 +19,21 @@ import java.util.*
   limitations under the License.
 / * **************************************************************************/
 
+class KeyListMap: MutableMap<Int, Boolean> by mutableMapOf(){
+
+    fun firstKey(): Int{
+        return keys.minOf { it }
+    }
+
+    fun ceilingKey(key: Int): Int{
+        return keys.sorted().find { it >= key } ?: error("Not found")
+    }
+
+}
+
 class CaseVariationIterator(private val aOriginalValue: String) : StringIterator {
-    private val aValue = StringBuilder(aOriginalValue.lowercase(Locale.getDefault()))
-    private val aSwitchableCharPositions = TreeMap<Int, Boolean>() // true - lower, false - upper case
+    private val aValue = StringBuilder(aOriginalValue.lowercase())
+    private val aSwitchableCharPositions = KeyListMap() // true - lower, false - upper case
 
     private var aCurrentPos = 0
     private var hasNext = false
@@ -29,9 +41,9 @@ class CaseVariationIterator(private val aOriginalValue: String) : StringIterator
 
     init {
         var currentPos = Util.indexOfNextCaseSensitiveCharacter(aValue, 0)
-        while (currentPos.isPresent) {
-            aSwitchableCharPositions[currentPos.asInt] = true
-            currentPos = Util.indexOfNextCaseSensitiveCharacter(aValue, currentPos.asInt + 1)
+        while (currentPos != null) {
+            aSwitchableCharPositions[currentPos] = true
+            currentPos = Util.indexOfNextCaseSensitiveCharacter(aValue, currentPos + 1)
         }
         reset()
     }
@@ -49,21 +61,20 @@ class CaseVariationIterator(private val aOriginalValue: String) : StringIterator
             return aValue.toString()
         } else {        // All other
             val currentChar = aValue[aCurrentPos]
-            if (Character.isLowerCase(currentChar)) {
-                aValue.setCharAt(aCurrentPos, currentChar.uppercaseChar())
-                aSwitchableCharPositions[aCurrentPos] = false
+            if (currentChar.isLowerCase()) {
+                aValue.set(aCurrentPos, currentChar.uppercaseChar())
+                aSwitchableCharPositions.put(aCurrentPos, false)
 
                 hasNext = aSwitchableCharPositions.values
-                    .stream()
-                    .anyMatch { v: Boolean? -> v!! }
+                    .any { v: Boolean? -> v!! }
             } else {
-                while (Character.isUpperCase(aValue[aCurrentPos])) {
-                    aValue.setCharAt(aCurrentPos, aValue[aCurrentPos].lowercaseChar())
-                    aSwitchableCharPositions[aCurrentPos] = true
+                while (aValue[aCurrentPos].isUpperCase()) {
+                    aValue.set(aCurrentPos, aValue[aCurrentPos].lowercaseChar())
+                    aSwitchableCharPositions.put(aCurrentPos, true)
                     aCurrentPos = aSwitchableCharPositions.ceilingKey(aCurrentPos + 1)
                 }
-                aValue.setCharAt(aCurrentPos, aValue[aCurrentPos].uppercaseChar())
-                aSwitchableCharPositions[aCurrentPos] = false
+                aValue.set(aCurrentPos, aValue[aCurrentPos].uppercaseChar())
+                aSwitchableCharPositions.put(aCurrentPos, false)
                 aCurrentPos = aSwitchableCharPositions.firstKey()
             }
             return aValue.toString()
@@ -71,7 +82,8 @@ class CaseVariationIterator(private val aOriginalValue: String) : StringIterator
     }
 
     override fun reset() {
-        aValue.replace(0, aOriginalValue.length, aOriginalValue.lowercase(Locale.getDefault()))
+        aValue.clear()
+        aValue.append(aOriginalValue.lowercase())
         hasNext = true
         aCurrentPos = -1
     }

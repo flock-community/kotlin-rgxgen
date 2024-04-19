@@ -2,7 +2,8 @@ package community.flock.kotlinx.rgxgen.visitors
 
 import community.flock.kotlinx.rgxgen.config.RgxGenOption
 import community.flock.kotlinx.rgxgen.config.RgxGenProperties
-import java.util.*
+import kotlin.random.Random
+
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -33,7 +34,7 @@ class GenerationVisitorBuilder(private val aGenerateMatching: Boolean) {
 
     fun get(): GenerationVisitor {
         if (aRandom == null) {
-            aRandom = Random()
+            aRandom = Random.Default
         }
 
         if (aGroupsValues == null) {

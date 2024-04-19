@@ -1,7 +1,5 @@
 package community.flock.kotlinx.rgxgen.util.chars
 
-import java.util.*
-import java.util.stream.Stream
 import kotlin.math.max
 import kotlin.math.min
 
@@ -21,10 +19,6 @@ import kotlin.math.min
   limitations under the License.
 / * **************************************************************************/
 
-
-/**
- * implementation copied from java.util.ArrayList
- */
 class CharArrayList : CharList {
     private var elementData: CharArray?
     private var size: Int
@@ -46,7 +40,7 @@ class CharArrayList : CharList {
 
     override fun copy(): CharList {
         val arr = CharArray(size)
-        System.arraycopy(elementData, 0, arr, 0, size)
+        elementData?.copyInto(arr, 0, 0, size)
         return CharArrayList(arr)
     }
 
@@ -58,8 +52,8 @@ class CharArrayList : CharList {
         size += 1
     }
 
-    override fun stream(): Stream<Char> {
-        return String(elementData!!, 0, size).chars().mapToObj { i: Int -> i.toChar() }
+    override fun list(): List<Char> {
+        return elementData!!.concatToString(0, 0 + size).toList()
     }
 
     override fun addAll(originalSymbols: CharList) {
@@ -74,7 +68,7 @@ class CharArrayList : CharList {
         if (srcLength > elementData!!.size - size) {
             grow(size + srcLength)
         }
-        System.arraycopy(srcArr, 0, elementData, size, srcLength)
+        srcArr?.copyInto(elementData!!, 0, 0, size)
         size += srcLength
     }
 
@@ -90,7 +84,7 @@ class CharArrayList : CharList {
         get() = size == 0
 
     override fun sort() {
-        Arrays.sort(elementData, 0, size)
+        elementData?.sort(0, size)
     }
 
     override fun except(predicate: CharPredicate): CharList {

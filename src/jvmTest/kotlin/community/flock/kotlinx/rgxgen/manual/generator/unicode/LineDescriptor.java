@@ -51,7 +51,7 @@ public class LineDescriptor {
             return "null";
         }
         return String.format("new Character[]{%s}",
-                             characters.stream().map(Utils::charAsString).map(LineDescriptor::sq).collect(Collectors.joining(","))
+                             characters.list().stream().map(Utils::charAsString).map(LineDescriptor::sq).collect(Collectors.joining(","))
         );
     }
 

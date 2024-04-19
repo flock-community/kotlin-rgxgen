@@ -11,10 +11,10 @@ import community.flock.kotlinx.rgxgen.nodes.NotSymbol
 import community.flock.kotlinx.rgxgen.nodes.Repeat
 import community.flock.kotlinx.rgxgen.nodes.Sequence
 import community.flock.kotlinx.rgxgen.nodes.SymbolSet
+import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.LONG_ONE
+import community.flock.kotlinx.rgxgen.parsing.dflt.ConstantsProvider.LONG_ZERO
 import community.flock.kotlinx.rgxgen.util.Util.countCaseInsensitiveVariations
-import java.math.BigInteger
-import java.util.*
-import java.util.function.Function
+import community.flock.kotlinx.rgxgen.util.Util.pow
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -41,84 +41,84 @@ class UniqueValuesCountingVisitor(private val aParentNode: Node?, private val aP
      * @return unique values estimation or empty, if infinite
      */
     // This value is returned to user later
-    var estimation: Optional<BigInteger> = Optional.of(BigInteger.ZERO)
+    var estimation: Long? = LONG_ZERO
         private set
 
     constructor(properties: RgxGenProperties<*>?) : this(null, properties)
 
-    private fun applyOrSkip(func: Function<BigInteger, Optional<BigInteger>>) {
-        estimation = estimation.flatMap(func)
+    private fun applyOrSkip(func: (Long) -> Long?) {
+        estimation = estimation?.let { func(it) }
     }
 
     override fun visit(node: SymbolSet) {
-        applyOrSkip { v: BigInteger ->
+        applyOrSkip { v: Long ->
             val size = if (RgxGenOption.CASE_INSENSITIVE.getFromProperties(aProperties)!!
             ) node.caseInsensitiveSymbolSetIndexer!!.size()
             else node.symbolSetIndexer!!.size()
-            Optional.of(v.add(BigInteger.valueOf(size.toLong())))
+            v + size.toLong()
         }
     }
 
     override fun visit(node: Choice) {
         for (child_node in node.nodes) {
-            applyOrSkip { v: BigInteger ->
+            applyOrSkip { v: Long ->
                 countSeparately(
                     node,
                     child_node,
                     aProperties
-                ).map { `val`: BigInteger? -> v.add(`val`) }
+                )?.let { `val` -> v + `val` }
             }
         }
     }
 
     override fun visit(node: FinalSymbol) {
         if (RgxGenOption.CASE_INSENSITIVE.getFromProperties(aProperties)!!) {
-            applyOrSkip { v: BigInteger -> Optional.of(v.add(countCaseInsensitiveVariations(node.value))) }
+            applyOrSkip { v: Long -> v + countCaseInsensitiveVariations(node.value) }
         } else {
-            applyOrSkip { v: BigInteger -> Optional.of(v.add(BigInteger.ONE)) }
+            applyOrSkip { v: Long -> v + LONG_ONE }
         }
     }
 
     override fun visit(node: Repeat) {
-        if (estimation.isPresent) {
+        if (estimation != null) {
             val countingVisitor = UniqueValuesCountingVisitor(node, aProperties)
             node.node
                 .visit(countingVisitor)
 
-            if (node.max < 0 || !countingVisitor.estimation.isPresent) {
-                estimation = Optional.empty()
+            if (node.max < 0 || countingVisitor.estimation == null) {
+                estimation = null
             } else {
-                var currentValue = estimation.get()
-                val nodesValue = countingVisitor.estimation.get()
+                var currentValue = estimation ?: error("")
+                val nodesValue = countingVisitor.estimation ?: error("")
                 for (i in node.min..node.max) {
-                    currentValue = currentValue.add(nodesValue.pow(i))
+                    currentValue = currentValue + nodesValue.pow(i)
                 }
-                estimation = Optional.of(currentValue)
+                estimation = currentValue
             }
         }
     }
 
     override fun visit(node: Sequence) {
-        if (estimation.isPresent) {
+        if (estimation != null) {
             for (child_node in node.nodes) {
                 val count = countSeparately(node, child_node, aProperties)
-                applyOrSkip { v: BigInteger ->
-                    if (!count.isPresent) {
-                        return@applyOrSkip Optional.empty<BigInteger>()
+                applyOrSkip { v: Long ->
+                    if (count == null) {
+                        return@applyOrSkip null
                     }
-                    if (v == BigInteger.ZERO) {
+                    if (v == LONG_ZERO) {
                         return@applyOrSkip count
                     }
 
-                    val subCount = count.get()
-                    Optional.of(if (subCount == BigInteger.ZERO) v else v.multiply(subCount))
+                    val subCount = count
+                    if (subCount == LONG_ZERO) v else v * subCount
                 }
             }
         }
     }
 
     override fun visit(node: NotSymbol) {
-        estimation = Optional.empty()
+        estimation = null
     }
 
     override fun visit(node: GroupRef) {
@@ -127,7 +127,7 @@ class UniqueValuesCountingVisitor(private val aParentNode: Node?, private val aP
         ) {
             // When repeated multiple times - it adds as much unique values as it is repeated. So we should add 1 (it will be used in Repeat for calculation).
             // E.g. (a|b)\1{2,3} - captured value of group is repeated either 2 or 3 times - it gives 2 unique values.
-            estimation = estimation.map { v: BigInteger -> v.add(BigInteger.ONE) }
+            estimation = estimation?.let { v: Long -> v + LONG_ONE }
         }
         //else
         // Do nothing. It does not add new unique values apart from above mentioned cases
@@ -143,7 +143,7 @@ class UniqueValuesCountingVisitor(private val aParentNode: Node?, private val aP
             parentNode: Node,
             node: Node,
             properties: RgxGenProperties<*>?
-        ): Optional<BigInteger> {
+        ): Long? {
             val countingVisitor = UniqueValuesCountingVisitor(parentNode, properties)
             node.visit(countingVisitor)
             return countingVisitor.estimation

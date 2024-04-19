@@ -3,7 +3,6 @@ package community.flock.kotlinx.rgxgen.iterators.suppliers
 import community.flock.kotlinx.rgxgen.iterators.IndexIterator
 import community.flock.kotlinx.rgxgen.iterators.StringIterator
 import community.flock.kotlinx.rgxgen.visitors.helpers.SymbolSetIndexer
-import java.util.function.Supplier
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

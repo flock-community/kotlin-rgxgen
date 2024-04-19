@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen.nodes;
 
 import community.flock.kotlinx.rgxgen.model.MatchType;
-import community.flock.kotlinx.rgxgen.nodes.SymbolSet;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

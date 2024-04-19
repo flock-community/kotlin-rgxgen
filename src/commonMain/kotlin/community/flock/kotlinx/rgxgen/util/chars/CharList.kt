@@ -99,7 +99,7 @@ abstract class CharList {
         fun charList(symbolRanges: List<SymbolRange>, vararg symbols: Char): CharList {
             val size = symbols.size + symbolRanges.map { obj: SymbolRange -> obj.size() }.sum()
             val arr = CharArray(size)
-            symbols.copyInto(arr, 0, 0, arr.size)
+            symbols.copyInto(arr, 0, 0, symbols.size)
             var index = symbols.size
             for (symbolRange in symbolRanges) {
                 for (i in symbolRange.from..symbolRange.to) {

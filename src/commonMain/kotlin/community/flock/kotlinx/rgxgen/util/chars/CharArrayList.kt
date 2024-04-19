@@ -40,6 +40,8 @@ class CharArrayList : CharList {
 
     override fun copy(): CharList {
         val arr = CharArray(size)
+//        System.arraycopy(elementData, 0, arr, 0, size)
+
         elementData?.copyInto(arr, 0, 0, size)
         return CharArrayList(arr)
     }
@@ -53,7 +55,7 @@ class CharArrayList : CharList {
     }
 
     override fun list(): List<Char> {
-        return elementData!!.concatToString(0, 0 + size).toList()
+        return String(elementData!!, 0, size).toList()
     }
 
     override fun addAll(originalSymbols: CharList) {
@@ -68,7 +70,7 @@ class CharArrayList : CharList {
         if (srcLength > elementData!!.size - size) {
             grow(size + srcLength)
         }
-        srcArr?.copyInto(elementData!!, 0, 0, size)
+        System.arraycopy(srcArr, 0, elementData, size, srcLength)
         size += srcLength
     }
 

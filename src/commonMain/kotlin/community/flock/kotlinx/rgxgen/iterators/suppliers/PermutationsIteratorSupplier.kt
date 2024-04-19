@@ -19,7 +19,7 @@ import community.flock.kotlinx.rgxgen.iterators.StringIterator
   limitations under the License.
 / * **************************************************************************/
 
-class PermutationsIteratorSupplier(private val aSuppliers: List<Supplier<StringIterator>>) : Supplier<StringIterator> {
+class PermutationsIteratorSupplier(private val aSuppliers: List<Supplier<StringIterator>>) : Supplier<StringIterator>{
     override fun get(): StringIterator {
         return if (aSuppliers.size == 1) {
             aSuppliers[0].get()

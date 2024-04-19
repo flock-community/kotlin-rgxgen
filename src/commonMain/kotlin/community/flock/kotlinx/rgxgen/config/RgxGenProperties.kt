@@ -21,4 +21,4 @@ package community.flock.kotlinx.rgxgen.config
  *
  * @see community.flock.kotlinx.rgxgen.config.RgxGenOption for available options
  */
-class RgxGenProperties<T>: MutableMap<String, T> by mutableMapOf()
+class RgxGenProperties<T>: HashMap<String, T>()

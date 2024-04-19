@@ -1,7 +1,5 @@
 package community.flock.kotlinx.rgxgen.model
 
-import kotlin.jvm.JvmField
-
 /* **************************************************************************
    Copyright 2019 Vladislavs Varslavans
 

@@ -77,7 +77,7 @@ object Util {
     @JvmStatic
     fun countCaseInsensitiveVariations(value: String): Long {
         val switchableCase = value.toList()
-            .map { c -> if (c.isLowerCase() || c.isUpperCase()) 1 else 0 }
+            .map { c -> if (c.isUpperCase() || c.isLowerCase()) 1 else 0 }
             .sum()
         return ConstantsProvider.LONG_TWO.pow(switchableCase)
     }
@@ -185,7 +185,6 @@ object Util {
         symbolRanges
             .filter { range: SymbolRange -> range.to >= firstCharInRange && range.from <= lastCharInRange }
             .forEach { e: SymbolRange -> list.add(e) }
-
         symbols
             .list()
             .filter { c: Char -> firstCharInRange <= c.code && c.code <= lastCharInRange }

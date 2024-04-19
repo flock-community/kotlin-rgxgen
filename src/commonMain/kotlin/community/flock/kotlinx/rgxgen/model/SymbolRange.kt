@@ -1,7 +1,6 @@
 package community.flock.kotlinx.rgxgen.model
 
 import community.flock.kotlinx.rgxgen.util.chars.CharList
-import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -35,30 +34,33 @@ class SymbolRange private constructor(val from: Int, val to: Int) {
         return from <= c && c <= to
     }
 
-
-    override fun toString(): String {
-        return "SymbolRange{" +
-                "from=" + from +
-                ", to=" + to +
-                '}'
-    }
-
     override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this::class != other::class) return false
+        if (this === other) {
+            return true
+        }
+        if (other == null || javaClass != other.javaClass) {
+            return false
+        }
 
-        other as SymbolRange
+        val range = other as SymbolRange
 
-        if (from != other.from) return false
-        if (to != other.to) return false
-
-        return true
+        if (from != range.from) {
+            return false
+        }
+        return to == range.to
     }
 
     override fun hashCode(): Int {
         var result = from
         result = 31 * result + to
         return result
+    }
+
+    override fun toString(): String {
+        return "SymbolRange{" +
+                "from=" + from +
+                ", to=" + to +
+                '}'
     }
 
     companion object {

@@ -19,7 +19,7 @@ import community.flock.kotlinx.rgxgen.iterators.StringIterator
   limitations under the License.
 / * **************************************************************************/
 
-class NegativeIteratorSupplier(val pattern: String, private val aIteratorSupplier: Supplier<StringIterator>) : Supplier<StringIterator> {
+class NegativeIteratorSupplier(val pattern: String, private val aIteratorSupplier: Supplier<StringIterator>) : Supplier<StringIterator>{
 
     override fun get(): StringIterator {
         return NegativeStringIterator(aIteratorSupplier.get(), pattern)

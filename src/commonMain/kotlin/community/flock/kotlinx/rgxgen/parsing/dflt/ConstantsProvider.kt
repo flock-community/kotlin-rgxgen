@@ -3,8 +3,6 @@ package community.flock.kotlinx.rgxgen.parsing.dflt
 import community.flock.kotlinx.rgxgen.model.SymbolRange
 import community.flock.kotlinx.rgxgen.model.SymbolRange.Companion.range
 import community.flock.kotlinx.rgxgen.nodes.Node
-import kotlin.jvm.JvmField
-import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

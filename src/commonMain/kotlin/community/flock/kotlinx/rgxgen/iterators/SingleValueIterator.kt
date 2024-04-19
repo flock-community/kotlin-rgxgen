@@ -1,7 +1,5 @@
 package community.flock.kotlinx.rgxgen.iterators
 
-import kotlin.jvm.JvmOverloads
-
 /* **************************************************************************
    Copyright 2019 Vladislavs Varslavans
 

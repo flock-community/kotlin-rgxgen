@@ -8,7 +8,6 @@ import community.flock.kotlinx.rgxgen.util.Util.newRandom
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.util.regex.Pattern
-import kotlin.test.assertEquals
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans

@@ -42,7 +42,7 @@ class CaseVariationIterator(private val aOriginalValue: String) : StringIterator
     init {
         var currentPos = Util.indexOfNextCaseSensitiveCharacter(aValue, 0)
         while (currentPos != null) {
-            aSwitchableCharPositions[currentPos] = true
+            aSwitchableCharPositions.put(currentPos, true)
             currentPos = Util.indexOfNextCaseSensitiveCharacter(aValue, currentPos + 1)
         }
         reset()
@@ -88,7 +88,7 @@ class CaseVariationIterator(private val aOriginalValue: String) : StringIterator
         aCurrentPos = -1
     }
 
-    override fun current(): String? {
+    override fun current(): String {
         return aValue.toString()
     }
 

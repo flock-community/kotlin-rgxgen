@@ -6,7 +6,6 @@ import community.flock.kotlinx.rgxgen.util.Util.compactOverlappingRangesAndSymbo
 import community.flock.kotlinx.rgxgen.util.chars.CharList
 import community.flock.kotlinx.rgxgen.util.chars.CharList.Companion.charList
 import community.flock.kotlinx.rgxgen.util.chars.CharList.Companion.empty
-import kotlin.jvm.JvmStatic
 
 /* **************************************************************************
   Copyright 2019 Vladislavs Varslavans
@@ -26,7 +25,7 @@ import kotlin.jvm.JvmStatic
 
 
 class RgxGenCharsDefinition private constructor(rangeList: List<SymbolRange>?, characters: CharList) {
-    val rangeList: MutableList<SymbolRange> = rangeList.orEmpty().toMutableList()
+    val rangeList: MutableList<SymbolRange> = ArrayList(rangeList)
     val characters: CharList = characters.copy()
 
     fun withRanges(vararg ranges: SymbolRange): RgxGenCharsDefinition {

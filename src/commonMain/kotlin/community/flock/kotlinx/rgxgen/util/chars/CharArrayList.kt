@@ -70,7 +70,7 @@ class CharArrayList : CharList {
         if (srcLength > elementData!!.size - size) {
             grow(size + srcLength)
         }
-        srcArr?.copyInto(elementData!!, 0,0,size)
+        srcArr?.copyInto(elementData!!, size, 0, srcLength )
         size += srcLength
     }
 

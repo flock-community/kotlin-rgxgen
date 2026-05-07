@@ -87,7 +87,19 @@ kotlin {
     macosX64()
     macosArm64()
     linuxX64()
+    linuxArm64()
     mingwX64()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
+    tvosSimulatorArm64()
+    watchosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosSimulatorArm64()
+    watchosDeviceArm64()
     jvm {
         compilations.all {
             kotlinOptions{
@@ -104,6 +116,14 @@ kotlin {
                 useMocha()
             }
         }
+        binaries.executable()
+    }
+    wasmJs {
+        nodejs()
+        binaries.executable()
+    }
+    wasmWasi {
+        nodejs()
         binaries.executable()
     }
     sourceSets {

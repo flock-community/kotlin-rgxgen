@@ -34,15 +34,20 @@ jobs:
 
     - name: Set version from input
       if: github.event_name == 'workflow_dispatch'
+      env:
+        INPUT_VERSION: ${{ github.event.inputs.version }}
       run: |
-        echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-        sed -i '' 's/version = ".*"/version = "${{ github.event.inputs.version }}"/' build.gradle.kts
+        echo "VERSION=$INPUT_VERSION" >> $GITHUB_ENV
+        sed -i '' "s/version = \".*\"/version = \"$INPUT_VERSION\"/" build.gradle.kts
 
     - name: Set version from release
       if: github.event_name == 'release'
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
       run: |
-        echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
-        sed -i '' 's/version = ".*"/version = "${{ github.event.release.tag_name }}"/' build.gradle.kts
+        VERSION="${RELEASE_TAG#v}"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        sed -i '' "s/version = \".*\"/version = \"$VERSION\"/" build.gradle.kts
 
     - name: Publish to Maven Central
       env:

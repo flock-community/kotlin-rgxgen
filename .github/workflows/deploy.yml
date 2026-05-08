@@ -1,0 +1,53 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: Build and test
+      run: ./gradlew build
+
+    - name: Set version from input
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
+        sed -i '' 's/version = ".*"/version = "${{ github.event.inputs.version }}"/' build.gradle.kts
+
+    - name: Set version from release
+      if: github.event_name == 'release'
+      run: |
+        echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+        sed -i '' 's/version = ".*"/version = "${{ github.event.release.tag_name }}"/' build.gradle.kts
+
+    - name: Publish to Maven Central
+      env:
+        SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+        SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository

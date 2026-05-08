@@ -3,9 +3,9 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.dokka") version "1.8.10"
-    kotlin("multiplatform") version "1.9.23"
-    kotlin("plugin.serialization") version "1.5.21"
+    id("org.jetbrains.dokka") version "1.9.20"
+    kotlin("multiplatform") version "2.0.21"
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 group = "community.flock.kotlinx.rgxgen"

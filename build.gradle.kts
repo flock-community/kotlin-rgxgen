@@ -3,9 +3,9 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     id("maven-publish")
     id("signing")
-    id("org.jetbrains.dokka") version "1.8.10"
-    kotlin("multiplatform") version "1.9.23"
-    kotlin("plugin.serialization") version "1.5.21"
+    id("org.jetbrains.dokka") version "1.9.20"
+    kotlin("multiplatform") version "2.0.21"
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 group = "community.flock.kotlinx.rgxgen"
@@ -87,7 +87,19 @@ kotlin {
     macosX64()
     macosArm64()
     linuxX64()
+    linuxArm64()
     mingwX64()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
+    tvosSimulatorArm64()
+    watchosX64()
+    watchosArm32()
+    watchosArm64()
+    watchosSimulatorArm64()
+    watchosDeviceArm64()
     jvm {
         compilations.all {
             kotlinOptions{
@@ -106,11 +118,18 @@ kotlin {
         }
         binaries.executable()
     }
+    wasmJs {
+        nodejs()
+        binaries.executable()
+    }
+    wasmWasi {
+        nodejs()
+        binaries.executable()
+    }
     sourceSets {
         commonTest {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
         val jsMain by getting {

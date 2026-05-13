@@ -112,7 +112,8 @@ kotlin {
     jvm {
         compilations.all {
             kotlinOptions{
-                jvmTarget = "17"
+                jvmTarget = "11"
+                freeCompilerArgs = freeCompilerArgs + "-Xjdk-release=11"
             }
         }
         testRuns["test"].executionTask.configure {
